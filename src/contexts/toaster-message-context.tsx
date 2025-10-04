@@ -1,8 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { createContext, useState, type PropsWithChildren } from 'react'
 
 export const ToasterMessageContext = createContext({
     message: '',
-    setToasterMessageTimeout: (x: string) => {},
+    setToasterMessageTimeout: (_: string) => {},
 })
 
 export const ToasterMessageProvider = ({ children }: PropsWithChildren) => {
