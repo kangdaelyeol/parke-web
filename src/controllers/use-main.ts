@@ -20,13 +20,20 @@ const useMain = () => {
 
     useEffect(() => {
         ;(async () => {
-            if (!deviceId) return
+            if (!deviceId) {
+                setError('Error - Try again plz!')
+                setLoading(false)
+                return
+            }
 
             setLoading(true)
 
             const snap = await get(ref(db, `devices/${deviceId}/phone`))
+
             if (!snap.exists()) {
                 setError('Error - Try again plz!')
+                setLoading(false)
+                return
             }
 
             setPhone(snap.val())
