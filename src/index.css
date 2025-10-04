@@ -1,1 +1,22 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@utility skeleton {
+  @apply relative overflow-hidden rounded-[10px] w-[300px] h-[100px]
+  
+  after:content-[''] after:absolute after:inset-0 after:translate-x-full 
+  
+  after:animate-[skeleton-loader_1s_infinite];
+}
+
+@utility skeleton-dark {
+  @apply after:bg-[linear-gradient(270deg,rgba(255,255,255,0),rgba(255,255,255,0.02),rgba(255,255,255,0))];
+}
+
+@keyframes skeleton-loader {
+  0% {
+    transform: translateX(-200%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
