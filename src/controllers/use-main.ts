@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { db } from '@/db'
 import { get, ref } from 'firebase/database'
 import { insertHyphen } from '@/helpers/insert-hyphen'
@@ -9,14 +9,13 @@ const useMain = () => {
     const [loading, setLoading] = useState(true)
     const [phone, setPhone] = useState('')
     const [error, setError] = useState('')
+    const params = useParams()
 
     const { message, setToasterMessageTimeout } = useContext(
         ToasterMessageContext,
     )
 
-    const [query] = useSearchParams()
-
-    const deviceId = query.get('deviceId') ?? null
+    const deviceId = params.id
 
     useEffect(() => {
         ;(async () => {
@@ -28,7 +27,7 @@ const useMain = () => {
 
             setLoading(true)
 
-            const snap = await get(ref(db, `devices/${deviceId}/phone`))
+            const snap = await get(ref(db, `card/${deviceId}/phone`))
 
             if (!snap.exists()) {
                 setError('Error - Try again plz!')
