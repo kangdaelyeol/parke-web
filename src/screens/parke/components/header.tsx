@@ -8,9 +8,9 @@ export const Header = () => {
                         className="w-full h-full object-contain"
                     />
                 </div>
-                <div className="flex items-center ml-1 *:font-medium *:text-[20px]">
-                    <span className="tracking-[0.2em]">PARK</span>
-                    <span className="text-blue-primary tracking-[0.2em]">
+                <div className="flex items-center ml-1.5 *:font-medium *:text-[20px]">
+                    <span className="tracking-[0.15em]">PARK</span>
+                    <span className="text-blue-primary tracking-[0.15em]">
                         É
                     </span>
                 </div>
