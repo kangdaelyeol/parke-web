@@ -1,10 +1,10 @@
-export default function Skeleton({
+export const Skeleton = ({
     width,
     height,
 }: {
     width?: number | string
     height?: number | string
-}) {
+}) => {
     return (
         <div
             className="skeleton skeleton-dark"

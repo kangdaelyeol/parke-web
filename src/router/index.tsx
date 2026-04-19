@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import BasePage from '@/pages/base-page'
-import Main from '@/components/main'
-import NotFound from '@/components/not-found'
+import Parke from '@/screens/parke'
+import NotFound from '@/screens/not-found'
 
 export const router = createBrowserRouter([
     {
@@ -9,12 +9,8 @@ export const router = createBrowserRouter([
         element: <BasePage />,
         children: [
             {
-                index: true,
-                element: <Main />,
-            },
-            {
-                path: ':id',
-                element: <Main />,
+                path: 'parke/:id',
+                element: <Parke />,
             },
             {
                 path: '*',

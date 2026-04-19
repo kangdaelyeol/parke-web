@@ -4,7 +4,7 @@ import { db } from '@/db'
 import { get, ref } from 'firebase/database'
 import { ToasterMessageContext } from '@/contexts/toaster-message-context'
 
-const useMain = () => {
+export const useParke = () => {
     const [loading, setLoading] = useState(true)
     const [phone, setPhone] = useState('')
     const [error, setError] = useState('')
@@ -56,5 +56,3 @@ const useMain = () => {
         error,
     }
 }
-
-export default useMain
