@@ -1,12 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { createContext, useState, type PropsWithChildren } from 'react'
-
-export const ToasterMessageContext = createContext({
-    message: '',
-    setToasterMessageTimeout: (_: string) => {},
-})
+import { useState, type PropsWithChildren } from 'react'
+import { ToasterMessageContext } from '.'
 
 export const ToasterMessageProvider = ({ children }: PropsWithChildren) => {
     const [message, setMessage] = useState('')
