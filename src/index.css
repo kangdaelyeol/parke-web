@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @utility skeleton {
@@ -19,4 +20,10 @@
   100% {
     transform: translateX(100%);
   }
+}
+
+@theme {
+  --font-phone: "Plus Jakarta Sans";
+  --color-blue-primary: #383bf9;
+  --color-black-deep: #444;
 }

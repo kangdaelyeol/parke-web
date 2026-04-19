@@ -1,4 +1,4 @@
-export const insertHyphen = (number: string): string => {
+export const formatPhone = (number: string): string => {
     if (!number) return ''
     if (number.length === 11)
         return (

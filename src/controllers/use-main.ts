@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { db } from '@/db'
 import { get, ref } from 'firebase/database'
-import { insertHyphen } from '@/helpers/insert-hyphen'
 import { ToasterMessageContext } from '@/contexts/toaster-message-context'
 
 const useMain = () => {
@@ -30,7 +29,8 @@ const useMain = () => {
             const snap = await get(ref(db, `card/${deviceId}/phone`))
 
             if (!snap.exists()) {
-                setError('Error - Try again plz!')
+                // setError('Error - Try again plz!')
+                setPhone('01024130510')
                 setLoading(false)
                 return
             }
@@ -42,8 +42,6 @@ const useMain = () => {
         })()
     }, [])
 
-    const hyphenInsertedPhoneNumber = insertHyphen(phone)
-
     const copyPhone = () => {
         if (!phone) return
         navigator.clipboard.writeText(phone)
@@ -51,7 +49,6 @@ const useMain = () => {
     }
 
     return {
-        hyphenInsertedPhoneNumber,
         copyPhone,
         loading,
         message,
