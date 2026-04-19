@@ -1,34 +1,16 @@
 import Icon from '@mui/material/Icon'
 import { ToasterMessage } from '@/components'
-import { Skeleton } from '@/screens/parke/components'
+import { Skeleton, Header } from '@/screens/parke/components'
 import { useParke } from '@/controllers'
 import { formatPhone } from '@/helpers'
-import AppIcon from '@/assets/app-icon.png'
 
-export default function Main() {
+export default function Parke() {
     const { copyPhone, phone, loading, message, error } = useParke()
 
     return (
-        <div className="text-white flex flex-col">
-            <div className="flex items-center *:font-phone">
-                <div className="w-8 rounded-[5px] overflow-hidden *:block">
-                    <img
-                        src={AppIcon}
-                        className="w-full h-full object-contain"
-                    />
-                </div>
-                <div className="flexitems-center ml-1">
-                    <span className="tracking-[0.2em]">PARK</span>
-                    <span className="text-blue-primary tracking-[0.2em]">
-                        É
-                    </span>
-                </div>
-            </div>
-
-            <div className="flex flex-col">
-                <div className=""></div>
-            </div>
-            <span className="text-[30px] mt-[30px] font-phone font-medium">
+        <div className="text-white flex flex-col bg-[#000000] h-[100vh]">
+            <Header />
+            <span className="text-[30px] mt-[30px] font-phone">
                 {loading ? (
                     <Skeleton width={300} height={100} />
                 ) : error ? (
