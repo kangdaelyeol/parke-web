@@ -1,18 +1,17 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState, type PropsWithChildren } from 'react'
 import { useParams } from 'react-router-dom'
-import { db } from '@/db'
 import { get, ref } from 'firebase/database'
-import { ToasterMessageContext } from '@/contexts/toaster-message-context'
+import { db } from '@/db'
+import { useToasterMessageContext } from '@/contexts'
+import { ParkeContext } from '.'
 
-export const useParke = () => {
+export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
     const [loading, setLoading] = useState(true)
     const [phone, setPhone] = useState('')
     const [error, setError] = useState('')
     const params = useParams()
 
-    const { message, setToasterMessageTimeout } = useContext(
-        ToasterMessageContext,
-    )
+    const { setToasterMessageTimeout, message } = useToasterMessageContext()
 
     const deviceId = params.id
 
@@ -40,7 +39,7 @@ export const useParke = () => {
             // API calls - get Phone number from db
             setLoading(false)
         })()
-    }, [])
+    }, [deviceId])
 
     const copyPhone = () => {
         if (!phone) return
@@ -48,11 +47,11 @@ export const useParke = () => {
         setToasterMessageTimeout('Copied!')
     }
 
-    return {
-        copyPhone,
-        loading,
-        message,
-        phone,
-        error,
-    }
+    return (
+        <ParkeContext.Provider
+            value={{ copyPhone, loading, message, phone, error }}
+        >
+            {children}
+        </ParkeContext.Provider>
+    )
 }
