@@ -196,14 +196,13 @@ sketch
 !.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
-.history/
-
+.history
+.history/src/*
 # Built Visual Studio Code Extensions
 *.vsix
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
-.history
 .ionide
 # Editor directories and files
 .idea
