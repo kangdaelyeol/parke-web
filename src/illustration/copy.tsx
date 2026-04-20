@@ -1,6 +1,11 @@
 import type { IllustrationProps } from '.'
 
-export const Copy = ({ styles = {}, size, color, className }: IllustrationProps) => {
+export const Copy = ({
+    styles = {},
+    size,
+    color,
+    className,
+}: IllustrationProps) => {
     return (
         <svg
             width={size || '16'}
@@ -8,9 +13,9 @@ export const Copy = ({ styles = {}, size, color, className }: IllustrationProps)
             stroke={color || 'currentColor'}
             viewBox="0 0 24 24"
             fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             {...styles}
             className={className}
         >
