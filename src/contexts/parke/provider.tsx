@@ -44,7 +44,7 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
     const copyPhone = () => {
         if (!phone) return
         navigator.clipboard.writeText(phone)
-        setToasterMessageTimeout('Copied!')
+        setToasterMessageTimeout('전화번호가 복사되었습니다.')
     }
 
     return (
