@@ -1,20 +1,19 @@
-import { useState, type PropsWithChildren } from 'react'
+import { useRef, useState, type PropsWithChildren } from 'react'
 import { ToasterMessageContext } from '.'
 
 export const ToasterMessageProvider = ({ children }: PropsWithChildren) => {
     const [message, setMessage] = useState('')
-    const [timerId, setTimerId] = useState<number | null>(null)
+    const timerId = useRef<number | null>(null)
 
     const setToasterMessageTimeout = (message: string) => {
-        if (timerId) clearTimeout(timerId)
+        if (timerId?.current) return
 
-        const id = setTimeout(() => {
+        timerId.current = setTimeout(() => {
             setMessage('')
-            setTimerId(null)
-        }, 750)
+            timerId.current = null
+        }, 1500)
 
         setMessage(message)
-        setTimerId(id)
     }
 
     return (
