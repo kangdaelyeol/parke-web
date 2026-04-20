@@ -12,7 +12,7 @@ const ParkeContent = () => {
                 <Main />
                 <Footer />
             </div>
-
+            <ToasterMessage message={'전화번호가 복사되었습니다.'} />
             {message && <ToasterMessage message={message} />}
         </>
     )

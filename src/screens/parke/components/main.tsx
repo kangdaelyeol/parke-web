@@ -7,27 +7,29 @@ export const Main = () => {
 
     return (
         <div className="text-[#fafafa] w-full px-6 pt-30">
-            <div className="w-full max-w-150 flex flex-col mx-auto relative">
+            <div className="w-full max-w-150 relative">
                 <CircleGradient />
-                <div className="text-[#737373] font-intertight font-medium text-[16px]">
-                    차주 연락처
+                <div className="relative z-10 flex flex-col">
+                    <div className="text-[#737373] font-intertight font-medium text-[16px]">
+                        차주 연락처
+                    </div>
+                    <span className="text-[32px] mt-1 font-intertight tracking-wider font-[600]">
+                        {/* <Skeleton width={300} height={100} /> */}
+                        {loading ? (
+                            <Skeleton width={300} height={100} />
+                        ) : error ? (
+                            error
+                        ) : (
+                            formatPhone(phone)
+                        )}
+                    </span>
+                    <div className="text-[#737373] font-intertight font-medium text-[16px] mt-5">
+                        차주 메시지
+                    </div>
+                    <span className="text-[23px] mt-1 font-intertight tracking-wide font-[600]">
+                        전화 주시면 바로 빼드릴게요.
+                    </span>
                 </div>
-                <span className="text-[32px] mt-1 font-intertight tracking-wider font-[600]">
-                    {/* <Skeleton width={300} height={100} /> */}
-                    {loading ? (
-                        <Skeleton width={300} height={100} />
-                    ) : error ? (
-                        error
-                    ) : (
-                        formatPhone(phone)
-                    )}
-                </span>
-                <div className="text-[#737373] font-intertight font-medium text-[16px] mt-5">
-                    차주 메시지
-                </div>
-                <span className="text-[25px] mt-1 font-intertight tracking-wide font-[600]">
-                    전화 주시면 바로 빼드릴게요.
-                </span>
             </div>
         </div>
     )

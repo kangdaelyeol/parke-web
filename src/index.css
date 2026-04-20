@@ -39,16 +39,17 @@ body {
 
   --animate-drift-1: drift-1 8s infinite alternate linear;
   --animate-drift-2: drift-2 15s infinite alternate linear;
+  --animate-toaster: toaster 1.2s linear both;
 
   @keyframes drift-1 {
     0% {
       transform: translateX(-500px);
     }
     50% {
-      transform: translateX(100px) translateY(100px);
+      transform: translateX(100px) translateY(800px);
     }
     100% {
-      transform: translateX(600px) translateY(-100px);
+      transform: translateX(300px) translateY(-500px);
     }
   }
 
@@ -56,9 +57,27 @@ body {
     0% {
       transform: translateX(-400px) translateY(-200px);
     }
-
     100% {
       transform: translateX(300px) translateY(200px);
+    }
+  }
+
+  @keyframes toaster {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    100% {
+      transform: translateY(-10px);
+      opacity: 0;
     }
   }
 }
