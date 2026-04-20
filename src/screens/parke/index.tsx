@@ -7,11 +7,12 @@ const ParkeContent = () => {
 
     return (
         <>
-            <div className="fixed bg-black h-screen min-h-screen w-screen">
+            <div className="fixed bg-black h-dvh w-screen">
                 <Header />
                 <Main />
                 <Footer />
             </div>
+
             {message && <ToasterMessage message={message} />}
         </>
     )

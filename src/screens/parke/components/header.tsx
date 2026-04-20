@@ -1,7 +1,7 @@
 export const Header = () => {
     return (
-        <div className="pt-3 px-3 w-full">
-            <div className="max-w-200 mx-auto flex items-center *:font-phone">
+        <div className="pt-7 px-6 w-full">
+            <div className="max-w-150 mx-auto flex items-center *:font-phone">
                 <div className="w-10 rounded-[5px] overflow-hidden *:block">
                     <img
                         src="/app-icon.webp"
