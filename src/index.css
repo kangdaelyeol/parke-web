@@ -36,4 +36,29 @@ body {
   /* color */
   --color-blue-primary: #383bf9;
   --color-black-deep: #444;
+
+  --animate-drift-1: drift-1 8s infinite alternate linear;
+  --animate-drift-2: drift-2 15s infinite alternate linear;
+
+  @keyframes drift-1 {
+    0% {
+      transform: translateX(-500px);
+    }
+    50% {
+      transform: translateX(100px) translateY(100px);
+    }
+    100% {
+      transform: translateX(600px) translateY(-100px);
+    }
+  }
+
+  @keyframes drift-2 {
+    0% {
+      transform: translateX(-400px) translateY(-200px);
+    }
+
+    100% {
+      transform: translateX(300px) translateY(200px);
+    }
+  }
 }
