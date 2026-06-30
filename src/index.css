@@ -20,7 +20,9 @@ body {
   --animate-drift-2: drift-2 15s infinite alternate linear;
   --animate-toaster: toaster 1.2s linear both;
   --animate-skeleton: skeleton 1s infinite linear;
-  --animate-border: border 5s infinite linear;
+  --animate-border: border 12s infinite linear;
+  --animate-border2: border2 12s infinite linear;
+  --animate-border-box: border-box 12s infinite linear;
 
   @keyframes drift-1 {
     0% {
@@ -76,12 +78,60 @@ body {
       opacity: 0;
       transform: rotateZ(0deg);
     }
-    50% {
+
+    15% {
       opacity: 1;
+    }
+    46% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+      transform: rotateZ(360deg);
     }
     100% {
       opacity: 0;
-      transform: rotateZ(90deg);
+      transform: rotateZ(360deg);
+    }
+  }
+
+  @keyframes border2 {
+    0% {
+      opacity: 0;
+      transform: rotateZ(180deg);
+    }
+
+    15% {
+      opacity: 1;
+    }
+    46% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+      transform: rotateZ(540deg);
+    }
+    100% {
+      opacity: 0;
+      transform: rotateZ(540deg);
+    }
+  }
+
+  @keyframes border-box {
+    0% {
+      background-color: black;
+    }
+    70% {
+      background-color: black;
+    }
+    72% {
+      background-color: transparent;
+    }
+    98% {
+      background-color: transparent;
+    }
+    100% {
+      background-color: black;
     }
   }
 }

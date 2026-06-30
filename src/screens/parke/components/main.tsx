@@ -1,6 +1,6 @@
-import { CircleGradient, GradientBox, Skeleton } from '.'
 import { useParkeContext } from '@/contexts'
-import { formatPhone } from '@/utils'
+import { formatPhone, cn } from '@/utils'
+import { CircleGradient, Skeleton } from '.'
 
 export const Main = () => {
     const { phone, loading, error } = useParkeContext()
@@ -11,28 +11,45 @@ export const Main = () => {
                 <CircleGradient />
                 <div className="relative z-10 flex flex-col">
                     <div className="text-[#737373] font-intertight font-medium text-[16px]">
-                        차주 연락처
+                        연락처
                     </div>
-                    <span className="text-[32px] mt-1 font-intertight tracking-wider font-[600] h-[55px]">
+                    <span className="flex">
                         {loading ? (
                             <Skeleton width={300} height={55} />
                         ) : error ? (
                             error
                         ) : (
-                            formatPhone(phone)
+                            <div
+                                className={cn(
+                                    'relative mr-auto p-0.5 overflow-hidden text-[23px] mt-1 tracking-wide font-[600] h-[55px]',
+                                    'after:absolute after:top-[-150%] after:left-[-150%] after:w-[400%] after:h-[400%]',
+                                    'after:bg-[conic-gradient(transparent_330deg,#ffffff95,#fff)] after:bg-no-repeat after:animate-border',
+                                    'before:absolute before:top-[-150%] before:left-[-150%] before:w-[400%] before:h-[400%]',
+                                    'before:bg-[conic-gradient(transparent_330deg,#ffffff95,#fff)] before:bg-no-repeat before:animate-border2',
+                                )}
+                            >
+                                <div className="relative z-10 py-2 px-2 animate-border-box">
+                                    {formatPhone(phone)}
+                                </div>
+                            </div>
                         )}
                     </span>
                     <div className="text-[#737373] font-intertight font-medium text-[16px] mt-5">
-                        차주 메시지
+                        메시지
                     </div>
-                    <span className="text-[23px] mt-1 font-intertight tracking-wide font-[600]">
-                        {loading ? (
-                            <Skeleton width={300} height={40} />
-                        ) : (
-                            '전화 주시면 바로 빼드릴게요.'
-                        )}
-                    </span>
-                    <GradientBox />
+                    {loading ? (
+                        <Skeleton width={300} height={40} />
+                    ) : (
+                        <div
+                            className={cn(
+                                'relative mr-auto p-0.5 overflow-hidden text-[23px] mt-1 tracking-wide font-[600] h-[55px]',
+                            )}
+                        >
+                            <div className="relative z-10 py-2 px-2">
+                                전화주시면 바로 빼드릴게요.
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
