@@ -7,7 +7,7 @@ export const Main = () => {
 
     return (
         <div className="text-[#fafafa] w-full px-6 pt-30">
-            <div className="w-full max-w-150 relative">
+            <div className="w-full max-w-[440px] relative mx-auto">
                 <CircleGradient />
                 <div className="relative z-10 flex flex-col">
                     <div className="text-[#737373] font-intertight font-medium text-[16px]">
@@ -42,7 +42,7 @@ export const Main = () => {
                     ) : (
                         <div
                             className={cn(
-                                'relative mr-auto p-0.5 overflow-hidden text-[23px] mt-1 tracking-wide font-[600] h-[55px]',
+                                'relative mr-auto p-0.5 text-[23px] mt-1 tracking-wide font-[600] h-[55px]',
                             )}
                         >
                             <div className="relative z-10 py-2 px-2">

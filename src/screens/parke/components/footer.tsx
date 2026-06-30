@@ -4,8 +4,8 @@ import { Copy, Phone } from '@/illustration'
 export const Footer = () => {
     const { copyPhone, phone } = useParkeContext()
     return (
-        <div className="absolute bottom-5 px-6 w-dvw">
-            <div className="max-w-150 mx-auto flex gap-[20px] text-[18px] text-white *:select-none">
+        <div className="absolute bottom-5 px-6 w-full">
+            <div className="max-w-[440px] mx-auto flex gap-[20px] text-[18px] text-white *:select-none">
                 <div onClick={copyPhone} className={buttonStyle}>
                     <Copy size={20} />
                     <span className="font-medium">복사</span>
