@@ -1,8 +1,73 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+KR:wght@100..900&display=swap");
 @import "tailwindcss";
 
+/* theme tokens - card/{id}/theme 값이 <html data-theme>에 적용된다 (src/themes.ts) */
+:root {
+  --parke-surface: #000000;
+  --parke-content: #fafafa;
+  --parke-muted: #737373;
+  --parke-line: #ffffff30;
+  --parke-accent: #383bf9;
+  --parke-on-accent: #ffffff;
+  --parke-glow-1: rgba(99, 102, 241, 0.25);
+  --parke-glow-2: rgba(169, 85, 247, 0.201);
+  --parke-shimmer: rgba(255, 255, 255, 0.07);
+  --parke-radius: 10px;
+  --parke-font-number: inherit;
+  --parke-logo-filter: none;
+}
+
+[data-theme="light"] {
+  --parke-surface: #ffffff;
+  --parke-content: #111111;
+  --parke-muted: #6b6b6b;
+  --parke-line: #00000022;
+  --parke-glow-1: rgba(99, 102, 241, 0.18);
+  --parke-glow-2: rgba(169, 85, 247, 0.15);
+  --parke-shimmer: rgba(0, 0, 0, 0.06);
+  --parke-logo-filter: invert(1);
+}
+
+[data-theme="amber"] {
+  --parke-surface: #14110b;
+  --parke-content: #f5e9d0;
+  --parke-muted: #8c7a55;
+  --parke-line: #f5e9d030;
+  --parke-accent: #f5a524;
+  --parke-on-accent: #1a1204;
+  --parke-glow-1: rgba(245, 165, 36, 0.22);
+  --parke-glow-2: rgba(239, 90, 40, 0.16);
+  --parke-shimmer: rgba(245, 233, 208, 0.07);
+  --parke-radius: 2px;
+  --parke-font-number: "DM Mono", monospace;
+}
+
+[data-theme="mint"] {
+  --parke-surface: #06140f;
+  --parke-content: #eafff5;
+  --parke-muted: #6f9483;
+  --parke-line: #eafff52e;
+  --parke-accent: #2fd699;
+  --parke-on-accent: #04231a;
+  --parke-glow-1: rgba(47, 214, 153, 0.22);
+  --parke-glow-2: rgba(56, 189, 248, 0.16);
+  --parke-shimmer: rgba(234, 255, 245, 0.07);
+  --parke-radius: 999px;
+}
+
 body {
-  background-color: #000000;
+  background-color: var(--parke-surface);
+}
+
+@theme inline {
+  --color-surface: var(--parke-surface);
+  --color-content: var(--parke-content);
+  --color-muted: var(--parke-muted);
+  --color-line: var(--parke-line);
+  --color-accent: var(--parke-accent);
+  --color-on-accent: var(--parke-on-accent);
+  --radius-button: var(--parke-radius);
+  --font-number: var(--parke-font-number);
 }
 
 @theme {
@@ -13,7 +78,6 @@ body {
   --font-montserrat: "Montserrat", sans-serif;
 
   /* color */
-  --color-blue-primary: #383bf9;
   --color-black-deep: #444;
 
   --animate-drift-1: drift-1 8s infinite alternate linear;
@@ -119,10 +183,10 @@ body {
 
   @keyframes border-box {
     0% {
-      background-color: black;
+      background-color: var(--parke-surface);
     }
     50% {
-      background-color: black;
+      background-color: var(--parke-surface);
     }
     52% {
       background-color: transparent;
@@ -131,7 +195,7 @@ body {
       background-color: transparent;
     }
     100% {
-      background-color: black;
+      background-color: var(--parke-surface);
     }
   }
 }

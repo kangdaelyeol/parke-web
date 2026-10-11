@@ -7,7 +7,7 @@ const ParkeContent = () => {
 
     return (
         <>
-            <div className="fixed bg-black h-dvh w-screen">
+            <div className="fixed bg-surface h-dvh w-screen">
                 <Header />
                 <Main />
                 <Footer />

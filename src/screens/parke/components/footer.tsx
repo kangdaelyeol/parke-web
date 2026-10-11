@@ -1,18 +1,38 @@
 import { useParkeContext } from '@/contexts'
 import { Copy, Phone } from '@/illustration'
+import { cn } from '@/utils'
 
 export const Footer = () => {
-    const { copyPhone, phone } = useParkeContext()
+    const { copyPhone, phone, loading, error } = useParkeContext()
+    const disabled = loading || !!error || !phone
+
     return (
         <div className="absolute bottom-5 px-6 w-full">
-            <div className="max-w-[440px] mx-auto flex gap-[20px] text-[18px] text-white *:select-none">
-                <div onClick={copyPhone} className={buttonStyle}>
+            <div className="max-w-[440px] mx-auto flex gap-[12px] text-[18px] text-content *:select-none">
+                <button
+                    type="button"
+                    onClick={copyPhone}
+                    disabled={disabled}
+                    className={cn(
+                        buttonStyle,
+                        'flex-1 border-[0.5px] border-line active:bg-line',
+                        disabled && disabledStyle,
+                    )}
+                >
                     <Copy size={20} />
                     <span className="font-medium">복사</span>
-                </div>
-                <a href={phone ? `tel:${phone}` : '#'} className={buttonStyle}>
-                    <Phone size={20} />{' '}
-                    <span className="font-medium">전화</span>
+                </button>
+                <a
+                    href={disabled ? undefined : `tel:${phone}`}
+                    aria-disabled={disabled}
+                    className={cn(
+                        buttonStyle,
+                        'flex-[2] bg-accent text-on-accent font-semibold active:brightness-80',
+                        disabled && disabledStyle,
+                    )}
+                >
+                    <Phone size={20} />
+                    <span>전화하기</span>
                 </a>
             </div>
         </div>
@@ -20,4 +40,6 @@ export const Footer = () => {
 }
 
 const buttonStyle =
-    'flex justify-center items-center grow gap-[10px] border-[0.5px] border-[#ffffff30] px-[30px] py-[14px] rounded-[10px] cursor-pointer active:bg-[#ffffff30]'
+    'flex justify-center items-center gap-[10px] px-[20px] py-[14px] rounded-button cursor-pointer transition-opacity'
+
+const disabledStyle = 'opacity-40 pointer-events-none'
