@@ -9,6 +9,7 @@ interface ParkeContextValue {
     phone: string
     error: string
     theme: Theme
+    ownerMessage: string
 }
 
 export const ParkeContext = createContext({
@@ -19,6 +20,7 @@ export const ParkeContext = createContext({
     phone: '',
     error: '',
     theme: DEFAULT_THEME,
+    ownerMessage: '',
 } as ParkeContextValue)
 
 export const useParkeContext = () => {

@@ -15,6 +15,7 @@
   --parke-radius: 10px;
   --parke-font-number: inherit;
   --parke-logo-filter: none;
+  --parke-scale: 1;
 }
 
 [data-theme="light"] {
