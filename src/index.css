@@ -114,24 +114,28 @@ body {
   }
 }
 
-/* 써 내려가기 - 경계가 부드러운 마스크를 왼쪽에서 오른쪽으로 밀어 글자가 써지듯 나타난다 (복사 안내 등) */
+/* 써 내려가기 - 경계가 부드러운 마스크를 왼쪽에서 오른쪽으로 밀어 글자가 써지듯 나타난다 (복사 안내 등)
+   마스크·번짐은 키프레임 안에만 두고 fill 은 backwards 로 한다 - 끝나면 요소에 마스크가 남지 않는다
+   (마스크가 남아 있으면 앱 WebView 에서 글자를 저해상도로 그려 끝난 뒤 다시 흐릿해진다) */
 .write-in {
-  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  -webkit-mask-size: 250% 100%;
-  mask-size: 250% 100%;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
-  animation: write-in 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+  animation: write-in 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s backwards;
 }
 
 @keyframes write-in {
   from {
+    -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+    mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+    -webkit-mask-size: 250% 100%;
+    mask-size: 250% 100%;
     -webkit-mask-position: 100% 0;
     mask-position: 100% 0;
     filter: blur(3px);
   }
   to {
+    -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+    mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+    -webkit-mask-size: 250% 100%;
+    mask-size: 250% 100%;
     -webkit-mask-position: 0 0;
     mask-position: 0 0;
     filter: none;
@@ -159,7 +163,7 @@ body {
 
 .swap-content {
   animation: swap-materialize 0.7s cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--d, 0ms) + 80ms) both;
+    calc(var(--d, 0ms) + 80ms) backwards;
 }
 
 @keyframes swap-materialize {

@@ -275,7 +275,7 @@
 
 /* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .db-rise {
-  animation: db-rise 0.5s var(--db-ease) var(--d, 0ms) both;
+  animation: db-rise 0.5s var(--db-ease) var(--d, 0ms) backwards;
 }
 
 @keyframes db-orbit {

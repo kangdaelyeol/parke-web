@@ -243,19 +243,14 @@
 
 /* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .dc-enter {
-  animation: dc-enter 0.5s var(--dc-ease) var(--d, 0ms) both;
+  animation: dc-enter 0.5s var(--dc-ease) var(--d, 0ms) backwards;
 }
 
-/* 번호·메시지 - 공용 전환(Swap) 대신 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
+/* 번호·메시지 - 공용 전환(Swap) 대신 왼쪽에서 오른쪽으로 써 내려가듯 나타난다
+   공용 write-in 키프레임을 써서 끝나면 마스크가 남지 않는다 (fill backwards) */
 .dc-root .swap-content {
-  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  -webkit-mask-size: 250% 100%;
-  mask-size: 250% 100%;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
   animation: write-in 0.9s cubic-bezier(0.65, 0, 0.35, 1)
-    calc(var(--d, 0ms) + 80ms) both;
+    calc(var(--d, 0ms) + 80ms) backwards;
 }
 
 @keyframes dc-enter {

@@ -1,6 +1,10 @@
 /* 임시 시안 공용 - 시안 확정 후 삭제 */
+
+/* 등장 애니메이션은 fill 을 both 가 아닌 backwards 로 둔다 (끝 상태가 원래 모습과 같을 때)
+   both 로 끝 상태를 붙잡고 있으면 앱 WebView 가 요소를 애니메이션 레이어에 둔 채
+   시작 시점(축소·번짐) 해상도로 그려 두어, 끝난 뒤 글자가 흐려진다 */
 .draft-page {
-  animation: draft-page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: draft-page-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 @keyframes draft-page-in {
@@ -31,7 +35,7 @@
   box-shadow: inset 0 1px 0
     color-mix(in srgb, var(--parke-content) 6%, transparent);
   animation:
-    draft-skeleton-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both,
+    draft-skeleton-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards,
     draft-skeleton-sweep 1.1s cubic-bezier(0.45, 0, 0.55, 1) 0.3s infinite;
 }
 
