@@ -60,6 +60,76 @@ body {
   background-color: var(--parke-surface);
 }
 
+/* DB에서 글자 배율이 들어올 때 글자 크기가 한 번에 튀지 않고 서서히 바뀌도록 숫자 타입으로 등록 */
+@property --parke-scale {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+:root {
+  transition: --parke-scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 테두리 모양 마스크 - padding 안쪽(content-box)을 도려내 padding 두께만큼만 보이게 한다 */
+.border-ring {
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+/* 스켈레톤 → 내용 전환 (src/components/swap.tsx) */
+.swap > * {
+  grid-area: 1 / 1;
+}
+
+.swap-skeleton {
+  width: 100%;
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
+    filter 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms);
+}
+
+.swap[data-loading="false"] .swap-skeleton {
+  opacity: 0;
+  filter: blur(6px);
+  transform: scale(1.02);
+}
+
+.swap-content {
+  animation: swap-materialize 0.7s cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--d, 0ms) + 80ms) both;
+}
+
+@keyframes swap-materialize {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swap-content {
+    animation: none;
+  }
+
+  .swap-skeleton,
+  :root {
+    transition: none;
+  }
+}
+
 @theme inline {
   --color-surface: var(--parke-surface);
   --color-content: var(--parke-content);
@@ -87,7 +157,6 @@ body {
   --animate-skeleton: skeleton 1s infinite linear;
   --animate-border: border 12s infinite linear;
   --animate-border2: border2 12s infinite linear;
-  --animate-border-box: border-box 12s infinite linear;
 
   @keyframes drift-1 {
     0% {
@@ -179,24 +248,6 @@ body {
     100% {
       opacity: 0;
       transform: rotateZ(540deg);
-    }
-  }
-
-  @keyframes border-box {
-    0% {
-      background-color: var(--parke-surface);
-    }
-    50% {
-      background-color: var(--parke-surface);
-    }
-    52% {
-      background-color: transparent;
-    }
-    98% {
-      background-color: transparent;
-    }
-    100% {
-      background-color: var(--parke-surface);
     }
   }
 }

@@ -12,62 +12,8 @@
   }
 }
 
-/* DB에서 글자 배율이 들어올 때 글자 크기가 한 번에 튀지 않고 서서히 바뀌도록 숫자 타입으로 등록 */
-@property --parke-scale {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
-}
-
-:root:has(.draft-root) {
-  transition: --parke-scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* 스켈레톤 → 내용 전환 (Swap) */
-.draft-swap > * {
-  grid-area: 1 / 1;
-}
-
-.draft-swap-skeleton {
-  width: 100%;
-  transition:
-    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
-    filter 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms),
-    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms);
-}
-
-.draft-swap[data-loading="false"] .draft-swap-skeleton {
-  opacity: 0;
-  filter: blur(6px);
-  transform: scale(1.02);
-}
-
-.draft-swap-content {
-  animation: draft-materialize 0.7s cubic-bezier(0.22, 1, 0.36, 1)
-    calc(var(--d, 0ms) + 80ms) both;
-}
-
-@keyframes draft-materialize {
-  from {
-    opacity: 0;
-    filter: blur(8px);
-    transform: scale(0.985);
-  }
-  to {
-    opacity: 1;
-    filter: none;
-    transform: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .draft-page,
-  .draft-swap-content {
+  .draft-page {
     animation: none;
-  }
-
-  .draft-swap-skeleton,
-  :root:has(.draft-root) {
-    transition: none;
   }
 }

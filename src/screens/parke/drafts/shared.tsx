@@ -1,6 +1,6 @@
 // 임시 시안 공용 - 시안 확정 후 삭제
 import './shared.css'
-import type { CSSProperties, PropsWithChildren, ReactNode } from 'react'
+import type { PropsWithChildren } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import AppLogo from '@/images/app-logo.png'
 import { useParkeContext } from '@/contexts'
@@ -44,38 +44,12 @@ export const Screen = ({
     <div className="fixed inset-0 overflow-y-auto bg-surface text-content font-notokr">
         <div
             className={cn(
-                'draft-root relative mx-auto flex min-h-full max-w-[440px] flex-col px-6 pb-[max(20px,env(safe-area-inset-bottom))]',
+                'relative mx-auto flex min-h-full max-w-[440px] flex-col px-6 pb-[max(20px,env(safe-area-inset-bottom))]',
                 className,
             )}
         >
             {children}
         </div>
-    </div>
-)
-
-// 로딩이 끝나면 스켈레톤은 흐려지며 사라지고, 같은 자리에서 내용이 선명해진다
-// 둘을 같은 칸에 겹쳐 두기 때문에 전환 중에도 레이아웃이 흔들리지 않는다
-export const Swap = ({
-    loading,
-    skeleton,
-    children,
-    delayMs = 0,
-    className,
-}: PropsWithChildren<{
-    loading: boolean
-    skeleton: ReactNode
-    delayMs?: number
-    className?: string
-}>) => (
-    <div
-        className={cn('draft-swap grid w-full', className)}
-        data-loading={loading}
-        style={{ '--d': `${delayMs}ms` } as CSSProperties}
-    >
-        <div className="draft-swap-skeleton" aria-hidden>
-            {skeleton}
-        </div>
-        {!loading && <div className="draft-swap-content">{children}</div>}
     </div>
 )
 
