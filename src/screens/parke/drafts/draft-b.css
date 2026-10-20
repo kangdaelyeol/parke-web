@@ -109,6 +109,13 @@
   initial-value: 0deg;
 }
 
+/* 공전하는 빛의 밝기 - 같은 레이어의 고정 테두리는 그대로 두고 빛만 나타났다 사라지게 한다 */
+@property --db-orbit-glow {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 .db-card::before {
   content: "";
   position: absolute;
@@ -119,9 +126,24 @@
   background:
     conic-gradient(
       from var(--db-orbit),
-      transparent 0 66%,
-      color-mix(in srgb, var(--parke-accent) 70%, transparent) 88%,
-      var(--parke-content) 100%
+      /* 빛 두 개가 180° 간격으로 마주 보며 돈다 */ transparent 0 110deg,
+      color-mix(
+          in srgb,
+          var(--parke-accent) calc(var(--db-orbit-glow) * 0.7),
+          transparent
+        )
+        158deg,
+      color-mix(in srgb, var(--parke-content) var(--db-orbit-glow), transparent)
+        180deg,
+      transparent 180deg 290deg,
+      color-mix(
+          in srgb,
+          var(--parke-accent) calc(var(--db-orbit-glow) * 0.7),
+          transparent
+        )
+        338deg,
+      color-mix(in srgb, var(--parke-content) var(--db-orbit-glow), transparent)
+        360deg
     ),
     linear-gradient(
       150deg,
@@ -130,7 +152,8 @@
       transparent 65%,
       color-mix(in srgb, var(--parke-accent) 55%, transparent)
     );
-  animation: db-orbit 7s linear infinite;
+  /* A 처럼 앞 절반 동안 나타나 한 바퀴 돌고 사라진 뒤 쉰다 */
+  animation: db-orbit 14s linear infinite;
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -363,8 +386,21 @@
 }
 
 @keyframes db-orbit {
-  to {
+  0% {
+    --db-orbit: 0deg;
+    --db-orbit-glow: 0%;
+  }
+  15%,
+  46% {
+    --db-orbit-glow: 100%;
+  }
+  50% {
     --db-orbit: 360deg;
+    --db-orbit-glow: 0%;
+  }
+  100% {
+    --db-orbit: 360deg;
+    --db-orbit-glow: 0%;
   }
 }
 

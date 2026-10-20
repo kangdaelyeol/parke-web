@@ -100,16 +100,17 @@
   left: 4%;
   right: 4%;
   bottom: -10px;
-  height: 1.5px;
+  height: 1px;
   border-radius: 999px;
+  /* 빛줄기는 처음부터 선 왼쪽 밖(-100%)에 두어, 선이 펼쳐지는 동안 보이지 않다가 흐름이 시작되면 들어온다 */
   background:
     linear-gradient(
         90deg,
         transparent,
         var(--dd-link) 70%,
         var(--parke-content) 100%
-      )
-      0 0 / 50% 100% no-repeat,
+      ) -100%
+      0 / 50% 100% no-repeat,
     linear-gradient(
       90deg,
       transparent,
@@ -117,9 +118,10 @@
       color-mix(in srgb, var(--parke-content) 22%, transparent) 80%,
       transparent
     );
+  /* 선을 펼친 뒤, A 처럼 앞 절반 동안 한 번 흐르고 사라진 뒤 쉰다 */
   animation:
     dd-underline-in 0.9s var(--dd-ease) 0.3s both,
-    dd-underline-flow 2.8s cubic-bezier(0.45, 0, 0.55, 1) 1.2s infinite;
+    dd-underline-flow 3.2s cubic-bezier(0.45, 0, 0.55, 1) 1.2s infinite;
 }
 
 @keyframes dd-underline-in {
@@ -133,14 +135,15 @@
   }
 }
 
-/* 빛줄기(폭 50%)를 선 왼쪽 밖에서 오른쪽 밖으로 */
+/* 빛줄기(폭 50%)를 선 왼쪽 밖에서 오른쪽 밖으로 - 오른쪽 밖에 머무는 동안은 보이지 않는다 */
 @keyframes dd-underline-flow {
-  from {
+  0% {
     background-position:
       -100% 0,
       0 0;
   }
-  to {
+  50%,
+  100% {
     background-position:
       200% 0,
       0 0;

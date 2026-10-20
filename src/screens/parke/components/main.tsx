@@ -73,13 +73,7 @@ export const Main = () => {
                                     {/* 회전하는 그라데이션을 가운데만 도려낸 테두리(p-0.5) 모양으로 마스킹 - 안쪽은 투명해서 뒤 배경이 비친다 */}
                                     <span
                                         aria-hidden
-                                        className={cn(
-                                            'border-ring absolute inset-0 overflow-hidden p-0.5',
-                                            'after:absolute after:top-[-150%] after:left-[-150%] after:w-[400%] after:h-[400%]',
-                                            'after:bg-[conic-gradient(transparent_330deg,color-mix(in_srgb,var(--parke-content)_58%,transparent),var(--parke-content))] after:bg-no-repeat after:animate-border',
-                                            'before:absolute before:top-[-150%] before:left-[-150%] before:w-[400%] before:h-[400%]',
-                                            'before:bg-[conic-gradient(transparent_330deg,color-mix(in_srgb,var(--parke-content)_58%,transparent),var(--parke-content))] before:bg-no-repeat before:animate-border2',
-                                        )}
+                                        className="border-ring border-orbit absolute inset-0 p-0.5"
                                     />
                                     <span className="relative block py-2 px-2">
                                         {formatPhone(phone)}

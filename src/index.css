@@ -74,6 +74,46 @@ body {
     linear-gradient(#000 0 0);
 }
 
+/* 번호 테두리를 도는 빛 두 개 - 판을 돌리지 않고 그라데이션 각도만 돌려서, 번호 길이와 상관없이 테두리 전체를 덮는다
+   빛은 180° 간격으로 마주 보며 돌고, 12초 중 앞 6초 동안 나타나 한 바퀴 돌고 사라진 뒤 쉰다 */
+@property --border-orbit {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.border-orbit {
+  background: conic-gradient(
+    from var(--border-orbit),
+    transparent 0 120deg,
+    color-mix(in srgb, var(--parke-content) 58%, transparent) 165deg,
+    var(--parke-content) 180deg,
+    transparent 180deg 300deg,
+    color-mix(in srgb, var(--parke-content) 58%, transparent) 345deg,
+    var(--parke-content) 360deg
+  );
+  animation: border-orbit 12s linear infinite;
+}
+
+@keyframes border-orbit {
+  0% {
+    --border-orbit: 0deg;
+    opacity: 0;
+  }
+  15%,
+  46% {
+    opacity: 1;
+  }
+  50% {
+    --border-orbit: 360deg;
+    opacity: 0;
+  }
+  100% {
+    --border-orbit: 360deg;
+    opacity: 0;
+  }
+}
+
 /* 복사 안내 - 경계가 부드러운 마스크를 밀어 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
 .copy-hint {
   position: absolute;
@@ -149,6 +189,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .border-orbit,
   .copy-hint,
   .swap-content {
     animation: none;
@@ -184,8 +225,6 @@ body {
   --animate-drift-2: drift-2 15s infinite alternate linear;
   --animate-toaster: toaster 1.2s linear both;
   --animate-skeleton: skeleton 1s infinite linear;
-  --animate-border: border 12s infinite linear;
-  --animate-border2: border2 12s infinite linear;
 
   @keyframes drift-1 {
     0% {
@@ -233,50 +272,6 @@ body {
     }
     100% {
       transform: translateX(200%);
-    }
-  }
-
-  @keyframes border {
-    0% {
-      opacity: 0;
-      transform: rotateZ(0deg);
-    }
-
-    15% {
-      opacity: 1;
-    }
-    46% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-      transform: rotateZ(360deg);
-    }
-    100% {
-      opacity: 0;
-      transform: rotateZ(360deg);
-    }
-  }
-
-  @keyframes border2 {
-    0% {
-      opacity: 0;
-      transform: rotateZ(180deg);
-    }
-
-    15% {
-      opacity: 1;
-    }
-    46% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-      transform: rotateZ(540deg);
-    }
-    100% {
-      opacity: 0;
-      transform: rotateZ(540deg);
     }
   }
 }
