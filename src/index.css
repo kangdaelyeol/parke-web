@@ -71,6 +71,43 @@ body {
     linear-gradient(#000 0 0);
 }
 
+/* 복사 안내 - 경계가 부드러운 마스크를 밀어 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
+.copy-hint {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 6px);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--parke-accent) 55%, var(--parke-content));
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  animation: copy-hint-write 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.copy-hint[data-visible="false"] {
+  opacity: 0;
+}
+
+@keyframes copy-hint-write {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    filter: blur(3px);
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+    filter: none;
+  }
+}
+
 /* 스켈레톤 → 내용 전환 (src/components/swap.tsx) */
 .swap > * {
   grid-area: 1 / 1;
@@ -109,6 +146,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .copy-hint,
   .swap-content {
     animation: none;
   }

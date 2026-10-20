@@ -7,7 +7,7 @@ import { formatPhone, cn } from '@/utils'
 import { Check, DraftError, Mark, Screen } from './shared'
 import { useActionState } from './use-action-state'
 import { useCopyFeedback } from './use-copy-feedback'
-import { useCopyHint } from './use-copy-hint'
+import { useCopyHint } from '@/hooks'
 
 const COPIED_DURATION = 2000
 
