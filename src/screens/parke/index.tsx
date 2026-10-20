@@ -2,17 +2,17 @@ import { useSearchParams } from 'react-router-dom'
 import { ParkeContextProvider, useParkeContext } from '@/contexts'
 import { ToasterMessage } from '@/components'
 import { Main, Header, Footer } from '@/screens/parke/components'
-import { DraftA, DraftB, DraftC, DraftSwitcher } from '@/screens/parke/drafts'
+import { DraftB, DraftC, DraftD, DraftSwitcher } from '@/screens/parke/drafts'
 
-// 임시 시안 - ?v=a|b|c 로 확인, 시안 확정 후 삭제
+// 임시 시안 - A는 기본 화면, ?v=b|c|d 로 나머지 확인, 시안 확정 후 삭제
 const DRAFTS: Record<string, () => React.JSX.Element> = {
-    a: DraftA,
     b: DraftB,
     c: DraftC,
+    d: DraftD,
 }
 
 // 복사 피드백을 화면 안에서 직접 보여주는 시안
-const INLINE_COPY_FEEDBACK = ['a', 'b', 'c']
+const INLINE_COPY_FEEDBACK = ['b', 'c', 'd']
 
 const ParkeContent = () => {
     const { message } = useParkeContext()
@@ -22,7 +22,7 @@ const ParkeContent = () => {
 
     return (
         <>
-            <div key={version ?? 'current'} className="draft-page">
+            <div key={Draft ? version : 'a'} className="draft-page">
                 {Draft ? (
                     <Draft />
                 ) : (

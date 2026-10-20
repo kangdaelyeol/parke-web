@@ -1,90 +1,103 @@
 /* 시안 C 전용 - 시안 확정 후 정리 */
 
+/* 가운데 모바일 영역 바깥(PC 화면의 양옆, body)까지 같은 회색으로 칠해 배경이 끊겨 보이지 않게 한다 */
+:root:has(.dc-root) {
+  --parke-surface: #17171c;
+}
 .dc-root {
-  /* 시안 C는 애플 다크 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
-  --parke-surface: #000000;
-  --parke-content: #f5f5f7;
-  --parke-muted: #86868b;
-  --parke-line: transparent;
-  --parke-accent: #0071e3;
+  /* 시안 C는 Toss 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
+  --parke-surface: #17171c;
+  --parke-content: #ffffff;
+  --parke-muted: #8b95a1;
+  --parke-line: rgba(255, 255, 255, 0.08);
+  --parke-accent: #3182f6;
   --parke-on-accent: #ffffff;
 
-  --dc-link: #2997ff;
-  --dc-body: #a1a1a6;
+  --dc-card: #222229;
+  --dc-body: #e5e8eb;
+  --dc-accent-pressed: #1b64da;
+  --dc-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --dc-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   background: var(--parke-surface);
   color: var(--parke-content);
   font-family:
-    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Tight",
-    "Noto Sans KR", sans-serif;
-  letter-spacing: -0.015em;
+    "Pretendard Variable",
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Noto Sans KR",
+    sans-serif;
+  letter-spacing: -0.02em;
   -webkit-font-smoothing: antialiased;
 }
 
-/* 텍스트 링크 - 배경 없이 색과 밑줄만 */
-.dc-link {
-  color: var(--dc-link);
+.dc-card {
+  background: var(--dc-card);
+  border: 1px solid var(--parke-line);
+  border-radius: 24px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 12px 32px -16px rgba(0, 0, 0, 0.6);
+}
+
+/* 누르면 복사되는 카드 - 카드 크기라 버튼보다 덜 줄어든다 */
+.dc-card-press {
   transition:
-    opacity 0.45s var(--dc-ease) 0.15s,
-    transform 0.3s var(--dc-ease);
+    transform 0.45s var(--dc-spring),
+    background-color 0.2s var(--dc-ease);
   -webkit-tap-highlight-color: transparent;
 }
 
-.dc-link:active {
-  transform: scale(0.97);
+.dc-card-press:active:not(:disabled) {
+  transform: scale(0.98);
+  background: #2b2b33;
   transition-duration: 0.1s;
 }
 
 @media (hover: hover) {
-  .dc-link:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .dc-card-press:hover:not(:disabled) {
+    background: #27272f;
   }
 }
 
-.dc-number {
-  transition: opacity 0.2s var(--dc-ease);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.dc-number:active {
-  opacity: 0.6;
-}
-
-/* 전화하기 - 애플 사이트의 파란 알약 버튼 */
 .dc-cta {
   background: var(--parke-accent);
   color: var(--parke-on-accent);
+  box-shadow: 0 10px 24px -12px
+    color-mix(in srgb, var(--parke-accent) 80%, transparent);
   transition:
-    transform 0.3s var(--dc-ease),
+    transform 0.45s var(--dc-spring),
     background-color 0.2s var(--dc-ease),
+    box-shadow 0.2s var(--dc-ease),
     opacity 0.45s var(--dc-ease) 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
 
 .dc-cta:active {
   transform: scale(0.98);
-  background: #006edb;
+  background: var(--dc-accent-pressed);
+  box-shadow: 0 4px 12px -8px
+    color-mix(in srgb, var(--parke-accent) 80%, transparent);
   transition-duration: 0.1s;
 }
 
 @media (hover: hover) {
   .dc-cta:hover {
-    background: #0077ed;
+    background: color-mix(in srgb, var(--parke-accent) 92%, #fff);
   }
 }
 
 /* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
 .dc-hint {
   position: absolute;
-  left: 50%;
-  bottom: calc(100% + 8px);
-  translate: -50% 0;
-  font-size: 13px;
-  font-weight: 500;
+  left: 0;
+  bottom: calc(100% + 6px);
+  font-size: 12px;
+  font-weight: 600;
   white-space: nowrap;
-  color: var(--dc-link);
+  color: color-mix(in srgb, var(--parke-accent) 75%, var(--parke-content));
   pointer-events: none;
   -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
   mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
@@ -100,7 +113,7 @@
   opacity: 0;
 }
 
-/* 하단 버튼 위 복사 완료 알림 - 배경 없이 글자만 */
+/* 하단 버튼 위 복사 완료 토스트 */
 .dc-toast-anchor {
   position: absolute;
   left: 0;
@@ -114,15 +127,21 @@
 .dc-toast {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 999px;
+  background: rgba(44, 44, 53, 0.94);
   color: var(--parke-content);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.7);
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(10px) scale(0.95);
   transition:
     opacity 0.3s var(--dc-ease),
-    transform 0.45s var(--dc-ease);
+    transform 0.45s var(--dc-spring);
 }
 
 .dc-toast[data-visible="true"] {
@@ -130,8 +149,14 @@
   transform: none;
 }
 
-.dc-toast svg {
-  color: var(--dc-link);
+.dc-toast-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--parke-accent);
+  color: var(--parke-on-accent);
 }
 
 .dc-check-draw polyline {
@@ -140,9 +165,21 @@
   animation: dc-draw 0.45s var(--dc-ease) 0.1s forwards;
 }
 
-/* 등장 - 화면 골격은 헤더 → 레이블 → 링크 → 버튼 순, 데이터는 번호 → 메시지 순 */
+/* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .dc-enter {
-  animation: dc-enter 0.6s var(--dc-ease) var(--d, 0ms) both;
+  animation: dc-enter 0.5s var(--dc-ease) var(--d, 0ms) both;
+}
+
+/* 번호·메시지 - 공용 전환(Swap) 대신 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
+.dc-root .swap-content {
+  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  animation: dc-write 0.9s cubic-bezier(0.65, 0, 0.35, 1)
+    calc(var(--d, 0ms) + 80ms) both;
 }
 
 @keyframes dc-enter {

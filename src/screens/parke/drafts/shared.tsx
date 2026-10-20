@@ -73,11 +73,12 @@ export const DraftError = () => {
     )
 }
 
+// A는 기본 화면 - ?v 없이 들어오면 A
 const VERSIONS = [
-    { key: null, label: '현재' },
-    { key: 'a', label: 'A' },
+    { key: null, label: 'A' },
     { key: 'b', label: 'B' },
     { key: 'c', label: 'C' },
+    { key: 'd', label: 'D' },
 ]
 
 export const DraftSwitcher = () => {

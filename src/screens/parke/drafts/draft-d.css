@@ -1,0 +1,189 @@
+/* 시안 D 전용 - 시안 확정 후 정리 */
+
+.dd-root {
+  /* 시안 D는 애플 다크 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
+  --parke-surface: #000000;
+  --parke-content: #f5f5f7;
+  --parke-muted: #86868b;
+  --parke-line: transparent;
+  --parke-accent: #0071e3;
+  --parke-on-accent: #ffffff;
+
+  --dd-link: #2997ff;
+  --dd-body: #a1a1a6;
+  --dd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--parke-surface);
+  color: var(--parke-content);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Tight",
+    "Noto Sans KR", sans-serif;
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 텍스트 링크 - 배경 없이 색과 밑줄만 */
+.dd-link {
+  color: var(--dd-link);
+  transition:
+    opacity 0.45s var(--dd-ease) 0.15s,
+    transform 0.3s var(--dd-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dd-link:active {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
+}
+
+@media (hover: hover) {
+  .dd-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.dd-number {
+  transition: opacity 0.2s var(--dd-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dd-number:active {
+  opacity: 0.6;
+}
+
+/* 전화하기 - 애플 사이트의 파란 알약 버튼 */
+.dd-cta {
+  background: var(--parke-accent);
+  color: var(--parke-on-accent);
+  transition:
+    transform 0.3s var(--dd-ease),
+    background-color 0.2s var(--dd-ease),
+    opacity 0.45s var(--dd-ease) 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dd-cta:active {
+  transform: scale(0.98);
+  background: #006edb;
+  transition-duration: 0.1s;
+}
+
+@media (hover: hover) {
+  .dd-cta:hover {
+    background: #0077ed;
+  }
+}
+
+/* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
+.dd-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  translate: -50% 0;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--dd-link);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  animation: dd-write 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+  transition: opacity 0.4s var(--dd-ease);
+}
+
+.dd-hint[data-visible="false"] {
+  opacity: 0;
+}
+
+/* 하단 버튼 위 복사 완료 알림 - 배경 없이 글자만 */
+.dd-toast-anchor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 14px);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.dd-toast {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--parke-content);
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.3s var(--dd-ease),
+    transform 0.45s var(--dd-ease);
+}
+
+.dd-toast[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.dd-toast svg {
+  color: var(--dd-link);
+}
+
+.dd-check-draw polyline {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: dd-draw 0.45s var(--dd-ease) 0.1s forwards;
+}
+
+/* 등장 - 화면 골격은 헤더 → 레이블 → 링크 → 버튼 순, 데이터는 번호 → 메시지 순 */
+.dd-enter {
+  animation: dd-enter 0.6s var(--dd-ease) var(--d, 0ms) both;
+}
+
+@keyframes dd-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dd-write {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    filter: blur(3px);
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+    filter: none;
+  }
+}
+
+@keyframes dd-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dd-root *,
+  .dd-root *::before,
+  .dd-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .dd-check-draw polyline {
+    stroke-dashoffset: 0;
+  }
+}

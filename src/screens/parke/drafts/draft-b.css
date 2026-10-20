@@ -1,92 +1,247 @@
 /* 시안 B 전용 - 시안 확정 후 정리 */
-
-/* 가운데 모바일 영역 바깥(PC 화면의 양옆, body)까지 같은 회색으로 칠해 배경이 끊겨 보이지 않게 한다 */
-:root:has(.db-root) {
-  --parke-surface: #17171c;
-}
 .db-root {
-  /* 시안 B는 Toss 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
-  --parke-surface: #17171c;
-  --parke-content: #ffffff;
-  --parke-muted: #8b95a1;
-  --parke-line: rgba(255, 255, 255, 0.08);
-  --parke-accent: #3182f6;
-  --parke-on-accent: #ffffff;
-
-  --db-card: #222229;
-  --db-body: #e5e8eb;
-  --db-accent-pressed: #1b64da;
-  --db-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --db-font:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Tight",
+    "Noto Sans KR", sans-serif;
   --db-ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-  background: var(--parke-surface);
-  color: var(--parke-content);
-  font-family:
-    "Pretendard Variable",
-    Pretendard,
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Text",
-    "Noto Sans KR",
-    sans-serif;
-  letter-spacing: -0.02em;
+  --db-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --db-glass: color-mix(in srgb, var(--parke-content) 6%, transparent);
+  --db-glass-strong: color-mix(in srgb, var(--parke-content) 10%, transparent);
+  --db-edge: color-mix(in srgb, var(--parke-content) 26%, transparent);
+  --db-edge-soft: color-mix(in srgb, var(--parke-content) 8%, transparent);
+  --db-highlight: color-mix(in srgb, var(--parke-content) 16%, transparent);
+  font-family: var(--db-font);
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
 }
 
-.db-card {
-  background: var(--db-card);
-  border: 1px solid var(--parke-line);
-  border-radius: 24px;
+/* 배경 - 깊은 어둠 위의 은은한 컬러 글로우 */
+.db-backdrop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 80% at 50% 110%,
+    color-mix(in srgb, var(--parke-surface) 70%, #000),
+    transparent 60%
+  );
+}
+
+.db-backdrop::before,
+.db-backdrop::after {
+  content: "";
+  position: absolute;
+  width: 110vmax;
+  height: 110vmax;
+  border-radius: 50%;
+}
+
+.db-backdrop::before {
+  left: -45vmax;
+  top: -55vmax;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--parke-accent) 38%, transparent),
+    transparent
+  );
+  animation: db-float-1 22s var(--db-ease) infinite alternate;
+}
+
+.db-backdrop::after {
+  right: -60vmax;
+  bottom: -60vmax;
+  background: radial-gradient(closest-side, var(--parke-glow-2), transparent);
+  animation: db-float-2 26s var(--db-ease) infinite alternate;
+}
+
+/* 글래스 칩 (헤더) */
+.db-glass-chip {
+  background: var(--db-glass);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.03) inset,
-    0 12px 32px -16px rgba(0, 0, 0, 0.6);
+    inset 0 1px 0 var(--db-highlight),
+    inset 0 0 0 1px var(--db-edge-soft);
 }
 
-/* 누르면 복사되는 카드 - 카드 크기라 버튼보다 덜 줄어든다 */
-.db-card-press {
+/* 메인 카드 - 글래스 + 그라데이션 보더 + 포인터 반사광 */
+.db-card {
+  --mx: 20%;
+  --my: 0%;
+  position: relative;
+  border-radius: min(calc(var(--parke-radius) * 2.8), 30px);
+  background: linear-gradient(
+    160deg,
+    var(--db-glass-strong),
+    color-mix(in srgb, var(--parke-content) 3%, transparent) 60%
+  );
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 var(--db-highlight),
+    inset 0 -24px 48px -32px rgba(0, 0, 0, 0.45),
+    0 40px 80px -40px rgba(0, 0, 0, 0.75),
+    0 0 60px -30px color-mix(in srgb, var(--parke-accent) 60%, transparent);
   transition:
-    transform 0.45s var(--db-spring),
-    background-color 0.2s var(--db-ease);
-  -webkit-tap-highlight-color: transparent;
+    transform 0.6s var(--db-ease),
+    box-shadow 0.6s var(--db-ease);
 }
 
-.db-card-press:active:not(:disabled) {
-  transform: scale(0.98);
-  background: #2b2b33;
-  transition-duration: 0.1s;
+.db-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    150deg,
+    var(--db-edge),
+    transparent 35%,
+    transparent 65%,
+    color-mix(in srgb, var(--parke-accent) 55%, transparent)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.db-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    460px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--parke-content) 11%, transparent),
+    transparent 45%
+  );
+  pointer-events: none;
 }
 
 @media (hover: hover) {
-  .db-card-press:hover:not(:disabled) {
-    background: #27272f;
+  .db-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow:
+      inset 0 1px 0 var(--db-highlight),
+      inset 0 -24px 48px -32px rgba(0, 0, 0, 0.45),
+      0 56px 96px -40px rgba(0, 0, 0, 0.8),
+      0 0 80px -28px color-mix(in srgb, var(--parke-accent) 75%, transparent);
   }
 }
 
-.db-cta {
-  background: var(--parke-accent);
+.db-divider {
+  background: linear-gradient(90deg, transparent, var(--db-edge), transparent);
+}
+
+/* 입체 전화 버튼 */
+.db-call {
+  position: relative;
+  overflow: hidden;
   color: var(--parke-on-accent);
-  box-shadow: 0 10px 24px -12px
-    color-mix(in srgb, var(--parke-accent) 80%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--parke-accent) 78%, #fff),
+    var(--parke-accent) 55%,
+    color-mix(in srgb, var(--parke-accent) 82%, #000)
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.22),
+    0 14px 32px -12px color-mix(in srgb, var(--parke-accent) 85%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.3);
   transition:
-    transform 0.45s var(--db-spring),
-    background-color 0.2s var(--db-ease),
-    box-shadow 0.2s var(--db-ease),
+    transform 0.25s var(--db-ease),
+    box-shadow 0.25s var(--db-ease),
+    filter 0.25s var(--db-ease),
     opacity 0.45s var(--db-ease) 0.15s;
-  -webkit-tap-highlight-color: transparent;
 }
 
-.db-cta:active {
-  transform: scale(0.98);
-  background: var(--db-accent-pressed);
-  box-shadow: 0 4px 12px -8px
-    color-mix(in srgb, var(--parke-accent) 80%, transparent);
-  transition-duration: 0.1s;
+.db-call::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  animation: db-sheen 5s var(--db-ease) 1.2s infinite;
+}
+
+.db-call:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.3),
+    0 6px 16px -10px color-mix(in srgb, var(--parke-accent) 85%, transparent);
+}
+
+/* 글래스 보조 버튼 */
+.db-glass-btn {
+  background: var(--db-glass);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 var(--db-highlight),
+    inset 0 0 0 1px var(--db-edge-soft),
+    0 10px 24px -14px rgba(0, 0, 0, 0.6);
+  transition:
+    transform 0.25s var(--db-ease),
+    background-color 0.25s var(--db-ease),
+    opacity 0.45s var(--db-ease) 0.15s;
+}
+
+.db-glass-btn:active {
+  transform: scale(0.95);
+  background: var(--db-glass-strong);
 }
 
 @media (hover: hover) {
-  .db-cta:hover {
-    background: color-mix(in srgb, var(--parke-accent) 92%, #fff);
+  .db-call:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
   }
+
+  .db-glass-btn:hover {
+    background: var(--db-glass-strong);
+  }
+}
+
+/* 복사 아이콘/문구 전환 */
+.db-swap {
+  display: grid;
+}
+
+.db-swap > * {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.3s var(--db-ease),
+    transform 0.45s var(--db-ease),
+    filter 0.3s var(--db-ease);
+}
+
+.db-swap > :last-child {
+  color: var(--parke-accent);
+  opacity: 0;
+  transform: scale(0.6) rotate(-15deg);
+  filter: blur(4px);
+}
+
+.db-swap[data-copied="true"] > :first-child {
+  opacity: 0;
+  transform: scale(0.6) rotate(15deg);
+  filter: blur(4px);
+}
+
+.db-swap[data-copied="true"] > :last-child {
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
 
 /* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
@@ -96,9 +251,11 @@
   bottom: calc(100% + 6px);
   font-size: 12px;
   font-weight: 600;
+  letter-spacing: -0.005em;
   white-space: nowrap;
-  color: color-mix(in srgb, var(--parke-accent) 75%, var(--parke-content));
+  color: color-mix(in srgb, var(--parke-accent) 55%, var(--parke-content));
   pointer-events: none;
+  /* 부드러운 경계를 가진 마스크를 왼쪽에서 오른쪽으로 민다 */
   -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
   mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
   -webkit-mask-size: 250% 100%;
@@ -130,13 +287,18 @@
   gap: 8px;
   padding: 8px 16px 8px 8px;
   border-radius: 999px;
-  background: rgba(44, 44, 53, 0.94);
+  background: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--parke-content) 16%, var(--parke-surface)) 88%,
+    transparent
+  );
   color: var(--parke-content);
   font-size: 14px;
   font-weight: 600;
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.01em;
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.65);
   opacity: 0;
   transform: translateY(10px) scale(0.95);
   transition:
@@ -166,30 +328,20 @@
 }
 
 /* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
-.db-enter {
-  animation: db-enter 0.5s var(--db-ease) var(--d, 0ms) both;
+.db-rise {
+  animation: db-rise 0.5s var(--db-ease) var(--d, 0ms) both;
 }
 
-/* 번호·메시지 - 공용 전환(Swap) 대신 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
-.db-root .swap-content {
-  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  -webkit-mask-size: 250% 100%;
-  mask-size: 250% 100%;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
-  animation: db-write 0.9s cubic-bezier(0.65, 0, 0.35, 1)
-    calc(var(--d, 0ms) + 80ms) both;
-}
-
-@keyframes db-enter {
+@keyframes db-rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(12px) scale(0.99);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }
 
@@ -209,6 +361,28 @@
 @keyframes db-draw {
   to {
     stroke-dashoffset: 0;
+  }
+}
+
+@keyframes db-float-1 {
+  to {
+    transform: translate(12vmax, 10vmax) scale(1.1);
+  }
+}
+
+@keyframes db-float-2 {
+  to {
+    transform: translate(-10vmax, -14vmax) scale(1.15);
+  }
+}
+
+@keyframes db-sheen {
+  0% {
+    transform: translateX(-100%);
+  }
+  30%,
+  100% {
+    transform: translateX(100%);
   }
 }
 

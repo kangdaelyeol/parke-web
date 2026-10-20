@@ -1,7 +1,7 @@
-// 시안 B - Toss 스타일: 카드 리스트, 하단 풀폭 CTA
+// 시안 B - 글래스 카드형 (Apple 스타일)
 import './draft-b.css'
-import type { CSSProperties } from 'react'
-import { Phone } from '@/illustration'
+import type { CSSProperties, PointerEvent } from 'react'
+import { Copy, Phone } from '@/illustration'
 import { Swap } from '@/components'
 import { formatPhone, cn } from '@/utils'
 import { Check, DraftError, Mark, Screen } from './shared'
@@ -13,9 +13,17 @@ const COPIED_DURATION = 2000
 
 const delay = (ms: number) => ({ '--d': `${ms}ms` }) as CSSProperties
 
-// 카드 안쪽 폭(화면 최대 440px - 좌우 여백 88px)에 번호 13자(약 7.8em)가 들어가도록 상한
-const NUMBER_SIZE =
-    'text-[length:min(calc(34px*var(--parke-scale)),calc((min(100vw,440px)_-_88px)/7.8))]'
+// 포인터 위치를 따라 카드의 반사광을 옮긴다
+const moveSheen = (e: PointerEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    e.currentTarget.style.setProperty('--mx', `${e.clientX - rect.left}px`)
+    e.currentTarget.style.setProperty('--my', `${e.clientY - rect.top}px`)
+}
+
+const resetSheen = (e: PointerEvent<HTMLElement>) => {
+    e.currentTarget.style.removeProperty('--mx')
+    e.currentTarget.style.removeProperty('--my')
+}
 
 export const DraftB = () => {
     const {
@@ -34,95 +42,93 @@ export const DraftB = () => {
         disabled,
         COPIED_DURATION,
     )
+
     const { hintVisible } = useCopyHint(loading, copied)
 
     return (
-        <Screen className="db-root px-5">
-            <header className="db-enter pt-5" style={delay(0)}>
-                <Mark className="w-8" />
+        <Screen className="db-root">
+            <div className="db-backdrop" aria-hidden />
+
+            <header className="db-rise relative z-10 pt-6" style={delay(0)}>
+                <span className="db-glass-chip grid size-10 place-items-center rounded-[12px]">
+                    <Mark className="w-6" />
+                </span>
             </header>
 
-            <main className="flex flex-1 flex-col justify-center gap-3 py-8">
+            <main className="relative z-10 flex flex-1 flex-col justify-center py-10">
                 {error ? (
-                    <div className="db-enter db-card p-6" style={delay(60)}>
+                    <div className="db-rise" style={delay(90)}>
                         <DraftError />
                     </div>
                 ) : (
-                    <>
-                        {/* 카드 전체가 복사 버튼 */}
-                        <div className="db-enter" style={delay(60)}>
-                            <button
-                                type="button"
-                                onClick={handleCopy}
-                                disabled={disabled}
-                                aria-label={
-                                    loading
-                                        ? undefined
-                                        : `${formatPhone(phone)} 복사`
-                                }
-                                className="db-card db-card-press block w-full cursor-pointer p-6 text-left disabled:cursor-default"
-                            >
-                                <span className="relative block text-[14px] font-medium text-muted">
-                                    차주 연락처
-                                    {!loading && (
-                                        <span
-                                            className="db-hint"
-                                            data-visible={hintVisible}
-                                        >
-                                            터치 한 번으로 번호 복사
-                                        </span>
-                                    )}
-                                </span>
-
-                                <Swap
-                                    loading={loading}
-                                    className="mt-2 justify-items-start"
-                                    skeleton={
-                                        // 실제 번호와 같은 글자 크기·행간으로 높이를 맞춰 로딩 후 레이아웃이 튀지 않게 한다
-                                        <div className={NUMBER_SIZE}>
-                                            <div className="draft-skeleton h-[1.25em] w-[7.2em] max-w-full" />
-                                        </div>
-                                    }
-                                >
+                    <div className="db-rise" style={delay(90)}>
+                        <section
+                            className="db-card p-7"
+                            onPointerMove={moveSheen}
+                            onPointerLeave={resetSheen}
+                        >
+                            <p className="relative text-[13px] font-medium tracking-[0.01em] text-muted">
+                                차주 연락처
+                                {!loading && (
                                     <span
-                                        className={cn(
-                                            'block whitespace-nowrap font-bold leading-[1.25] tracking-[-0.03em] tabular-nums',
-                                            NUMBER_SIZE,
-                                        )}
+                                        className="db-hint"
+                                        data-visible={hintVisible}
                                     >
+                                        터치 한 번으로 번호 복사
+                                    </span>
+                                )}
+                            </p>
+                            <Swap
+                                loading={loading}
+                                className="mt-2 justify-items-start"
+                                skeleton={
+                                    // 실제 번호와 같은 글자 크기·행간으로 높이를 맞춰 로딩 후 레이아웃이 튀지 않게 한다
+                                    <div className="text-[length:min(calc(40px*var(--parke-scale)),calc((min(100vw,440px)_-_104px)/7.8))]">
+                                        <div className="draft-skeleton h-[1.15em] w-[7.2em] max-w-full" />
+                                    </div>
+                                }
+                            >
+                                <button
+                                    type="button"
+                                    onClick={handleCopy}
+                                    aria-label={`${formatPhone(phone)} 복사`}
+                                    className="block cursor-pointer text-left"
+                                >
+                                    {/* 카드 안쪽 폭(화면 최대 440px - 좌우 여백 104px)에 번호 13자(약 7.8em)가 들어가도록 상한 */}
+                                    <span className="whitespace-nowrap font-number text-[length:min(calc(40px*var(--parke-scale)),calc((min(100vw,440px)_-_104px)/7.8))] font-bold leading-[1.15] tracking-[-0.025em] tabular-nums">
                                         {formatPhone(phone)}
                                     </span>
-                                </Swap>
-                            </button>
-                        </div>
+                                </button>
+                            </Swap>
 
-                        <section
-                            className="db-enter db-card p-6"
-                            style={delay(120)}
-                        >
-                            <p className="text-[14px] font-medium text-muted">
+                            <div className="db-divider my-7 h-px" />
+
+                            <p className="text-[13px] font-medium tracking-[0.01em] text-muted">
                                 남긴 메시지
                             </p>
                             <Swap
                                 loading={loading}
                                 delayMs={90}
-                                className="mt-2 justify-items-start"
+                                className="mt-2.5 justify-items-start"
                                 skeleton={
-                                    <div className="py-[0.3em] text-[length:calc(17px*var(--parke-scale))]">
+                                    <div className="py-[0.325em] text-[length:calc(18px*var(--parke-scale))]">
                                         <div className="draft-skeleton h-[1em] w-[70%]" />
                                     </div>
                                 }
                             >
-                                <p className="break-keep text-[length:calc(17px*var(--parke-scale))] font-semibold leading-[1.6] text-[var(--db-body)]">
+                                <p className="break-keep text-[length:calc(18px*var(--parke-scale))] font-medium leading-[1.65] text-content/90">
                                     {ownerMessage}
                                 </p>
                             </Swap>
                         </section>
-                    </>
+                    </div>
                 )}
             </main>
 
-            <footer className="db-enter relative" style={delay(180)}>
+            <footer
+                className="db-rise relative z-10 flex gap-3"
+                style={delay(180)}
+            >
                 <div className="db-toast-anchor" aria-hidden>
                     <div className="db-toast" data-visible={copied}>
                         <span className="db-toast-icon">
@@ -138,15 +144,29 @@ export const DraftB = () => {
                 <span className="sr-only" aria-live="polite">
                     {copied && '전화번호가 복사되었어요'}
                 </span>
+                <button
+                    type="button"
+                    onClick={handleCopy}
+                    disabled={disabled}
+                    data-copied={copied}
+                    aria-label={copied ? '복사됨' : '번호 복사'}
+                    className={cn(
+                        'db-glass-btn db-swap size-[60px] shrink-0 cursor-pointer place-items-center rounded-button',
+                        disabledStyle,
+                    )}
+                >
+                    <Copy size={22} />
+                    <Check size={22} />
+                </button>
                 <a
                     href={telHref}
                     aria-disabled={disabled}
                     className={cn(
-                        'db-cta flex h-14 w-full items-center justify-center gap-2 rounded-[16px] text-[17px] font-bold',
+                        'db-call flex h-[60px] flex-1 items-center justify-center gap-2.5 rounded-button text-[17px] font-semibold tracking-[-0.01em]',
                         disabledStyle,
                     )}
                 >
-                    <Phone size={19} />
+                    <Phone size={20} />
                     전화하기
                 </a>
             </footer>
