@@ -1,0 +1,255 @@
+/* 시안 B 전용 - 시안 확정 후 정리 */
+.db-root {
+  /* 시안 B는 Toss 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
+  --parke-surface: #101013;
+  --parke-content: #ffffff;
+  --parke-muted: #8b95a1;
+  --parke-line: rgba(255, 255, 255, 0.08);
+  --parke-accent: #3182f6;
+  --parke-on-accent: #ffffff;
+
+  --db-card: #1c1c22;
+  --db-card-raised: #25252d;
+  --db-body: #e5e8eb;
+  --db-accent-pressed: #1b64da;
+  --db-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --db-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--parke-surface);
+  color: var(--parke-content);
+  font-family:
+    "Pretendard Variable",
+    Pretendard,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Noto Sans KR",
+    sans-serif;
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.db-card {
+  background: var(--db-card);
+  border: 1px solid var(--parke-line);
+  border-radius: 24px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 12px 32px -16px rgba(0, 0, 0, 0.6);
+}
+
+/* 눌림 피드백 - 살짝 줄었다가 스프링으로 복귀 */
+.db-press {
+  transition:
+    transform 0.45s var(--db-spring),
+    background-color 0.2s var(--db-ease),
+    color 0.2s var(--db-ease),
+    opacity 0.45s var(--db-ease) 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.db-press:active {
+  transform: scale(0.96);
+  transition-duration: 0.1s;
+}
+
+.db-chip {
+  background: var(--db-card-raised);
+  color: var(--db-body);
+}
+
+.db-chip[data-copied="true"] {
+  background: color-mix(in srgb, var(--parke-accent) 16%, transparent);
+  color: var(--parke-accent);
+}
+
+.db-cta {
+  background: var(--parke-accent);
+  color: var(--parke-on-accent);
+  box-shadow: 0 10px 24px -12px
+    color-mix(in srgb, var(--parke-accent) 80%, transparent);
+  transition:
+    transform 0.45s var(--db-spring),
+    background-color 0.2s var(--db-ease),
+    box-shadow 0.2s var(--db-ease),
+    opacity 0.45s var(--db-ease) 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.db-cta:active {
+  transform: scale(0.98);
+  background: var(--db-accent-pressed);
+  box-shadow: 0 4px 12px -8px
+    color-mix(in srgb, var(--parke-accent) 80%, transparent);
+  transition-duration: 0.1s;
+}
+
+@media (hover: hover) {
+  .db-cta:hover {
+    background: color-mix(in srgb, var(--parke-accent) 92%, #fff);
+  }
+
+  .db-chip:hover {
+    background: color-mix(in srgb, var(--db-card-raised) 85%, #fff);
+  }
+}
+
+/* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
+.db-hint {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 6px);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--parke-accent) 75%, var(--parke-content));
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  animation: db-write 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+  transition: opacity 0.4s var(--db-ease);
+}
+
+.db-hint[data-visible="false"] {
+  opacity: 0;
+}
+
+/* 하단 버튼 위 복사 완료 토스트 */
+.db-toast-anchor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 14px);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.db-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 999px;
+  background: rgba(44, 44, 53, 0.94);
+  color: var(--parke-content);
+  font-size: 14px;
+  font-weight: 600;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition:
+    opacity 0.3s var(--db-ease),
+    transform 0.45s var(--db-spring);
+}
+
+.db-toast[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.db-toast-icon {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--parke-accent);
+  color: var(--parke-on-accent);
+}
+
+.db-check-draw polyline {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: db-draw 0.45s var(--db-ease) 0.1s forwards;
+}
+
+/* 로딩 - 짧은 로딩에서는 스켈레톤이 깜빡이지 않도록 0.2초 뒤에 나타난다 */
+.db-skeleton {
+  border-radius: 8px;
+  background: var(--db-card-raised);
+  animation:
+    db-fade-in 0.3s var(--db-ease) 0.2s both,
+    db-blink 1.4s ease-in-out 0.5s infinite;
+}
+
+/* 등장 - 화면 골격은 헤더 → 헤드라인 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
+.db-enter {
+  animation: db-enter 0.5s var(--db-ease) var(--d, 0ms) both;
+}
+
+.db-pop {
+  animation: db-pop 0.45s var(--db-spring) both;
+}
+
+@keyframes db-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes db-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes db-write {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    filter: blur(3px);
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+    filter: none;
+  }
+}
+
+@keyframes db-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes db-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes db-blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .db-root *,
+  .db-root *::before,
+  .db-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .db-check-draw polyline {
+    stroke-dashoffset: 0;
+  }
+}

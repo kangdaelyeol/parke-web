@@ -1,0 +1,211 @@
+/* 시안 C 전용 - 시안 확정 후 정리 */
+
+.dc-root {
+  /* 시안 C는 애플 다크 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
+  --parke-surface: #000000;
+  --parke-content: #f5f5f7;
+  --parke-muted: #86868b;
+  --parke-line: transparent;
+  --parke-accent: #0071e3;
+  --parke-on-accent: #ffffff;
+
+  --dc-link: #2997ff;
+  --dc-body: #a1a1a6;
+  --dc-skeleton: #1d1d1f;
+  --dc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--parke-surface);
+  color: var(--parke-content);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Tight",
+    "Noto Sans KR", sans-serif;
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 텍스트 링크 - 배경 없이 색과 밑줄만 */
+.dc-link {
+  color: var(--dc-link);
+  transition:
+    opacity 0.45s var(--dc-ease) 0.15s,
+    transform 0.3s var(--dc-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dc-link:active {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
+}
+
+@media (hover: hover) {
+  .dc-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.dc-number {
+  transition: opacity 0.2s var(--dc-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dc-number:active {
+  opacity: 0.6;
+}
+
+/* 전화하기 - 애플 사이트의 파란 알약 버튼 */
+.dc-cta {
+  background: var(--parke-accent);
+  color: var(--parke-on-accent);
+  transition:
+    transform 0.3s var(--dc-ease),
+    background-color 0.2s var(--dc-ease),
+    opacity 0.45s var(--dc-ease) 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dc-cta:active {
+  transform: scale(0.98);
+  background: #006edb;
+  transition-duration: 0.1s;
+}
+
+@media (hover: hover) {
+  .dc-cta:hover {
+    background: #0077ed;
+  }
+}
+
+/* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
+.dc-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  translate: -50% 0;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--dc-link);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  animation: dc-write 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
+  transition: opacity 0.4s var(--dc-ease);
+}
+
+.dc-hint[data-visible="false"] {
+  opacity: 0;
+}
+
+/* 하단 버튼 위 복사 완료 알림 - 배경 없이 글자만 */
+.dc-toast-anchor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 14px);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.dc-toast {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--parke-content);
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.3s var(--dc-ease),
+    transform 0.45s var(--dc-ease);
+}
+
+.dc-toast[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.dc-toast svg {
+  color: var(--dc-link);
+}
+
+.dc-check-draw polyline {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: dc-draw 0.45s var(--dc-ease) 0.1s forwards;
+}
+
+/* 로딩 - 짧은 로딩에서는 스켈레톤이 깜빡이지 않도록 0.2초 뒤에 나타난다 */
+.dc-skeleton {
+  border-radius: 10px;
+  background: var(--dc-skeleton);
+  animation:
+    dc-fade-in 0.3s var(--dc-ease) 0.2s both,
+    dc-blink 1.4s ease-in-out 0.5s infinite;
+}
+
+/* 등장 - 화면 골격은 헤더 → 레이블 → 링크 → 버튼 순, 데이터는 번호 → 메시지 순 */
+.dc-enter {
+  animation: dc-enter 0.6s var(--dc-ease) var(--d, 0ms) both;
+}
+
+@keyframes dc-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes dc-write {
+  from {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    filter: blur(3px);
+  }
+  to {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+    filter: none;
+  }
+}
+
+@keyframes dc-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes dc-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes dc-blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-root *,
+  .dc-root *::before,
+  .dc-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .dc-check-draw polyline {
+    stroke-dashoffset: 0;
+  }
+}

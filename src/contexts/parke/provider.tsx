@@ -80,6 +80,8 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
                     get(ref(db, `card/${deviceId}/custom`)).catch(() => null),
                 ])
 
+                console.log(snap, themeSnap, customSnap)
+
                 setDbTheme(themeSnap?.val() ?? null)
                 setDbCustom(customSnap?.val() ?? null)
 
