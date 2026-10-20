@@ -1,15 +1,20 @@
 /* 시안 B 전용 - 시안 확정 후 정리 */
+
+/* 가운데 모바일 영역 바깥(PC 화면의 양옆, body)까지 같은 회색으로 칠해 배경이 끊겨 보이지 않게 한다 */
+:root:has(.db-root) {
+  --parke-surface: #17171c;
+}
 .db-root {
   /* 시안 B는 Toss 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
-  --parke-surface: #101013;
+  --parke-surface: #17171c;
   --parke-content: #ffffff;
   --parke-muted: #8b95a1;
   --parke-line: rgba(255, 255, 255, 0.08);
   --parke-accent: #3182f6;
   --parke-on-accent: #ffffff;
 
-  --db-card: #1c1c22;
-  --db-card-raised: #25252d;
+  --db-card: #222229;
+  --db-card-raised: #2e2e37;
   --db-body: #e5e8eb;
   --db-accent-pressed: #1b64da;
   --db-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -38,29 +43,24 @@
     0 12px 32px -16px rgba(0, 0, 0, 0.6);
 }
 
-/* 눌림 피드백 - 살짝 줄었다가 스프링으로 복귀 */
-.db-press {
+/* 누르면 복사되는 카드 - 카드 크기라 버튼보다 덜 줄어든다 */
+.db-card-press {
   transition:
     transform 0.45s var(--db-spring),
-    background-color 0.2s var(--db-ease),
-    color 0.2s var(--db-ease),
-    opacity 0.45s var(--db-ease) 0.15s;
+    background-color 0.2s var(--db-ease);
   -webkit-tap-highlight-color: transparent;
 }
 
-.db-press:active {
-  transform: scale(0.96);
+.db-card-press:active:not(:disabled) {
+  transform: scale(0.98);
+  background: #2b2b33;
   transition-duration: 0.1s;
 }
 
-.db-chip {
-  background: var(--db-card-raised);
-  color: var(--db-body);
-}
-
-.db-chip[data-copied="true"] {
-  background: color-mix(in srgb, var(--parke-accent) 16%, transparent);
-  color: var(--parke-accent);
+@media (hover: hover) {
+  .db-card-press:hover:not(:disabled) {
+    background: #27272f;
+  }
 }
 
 .db-cta {
@@ -87,10 +87,6 @@
 @media (hover: hover) {
   .db-cta:hover {
     background: color-mix(in srgb, var(--parke-accent) 92%, #fff);
-  }
-
-  .db-chip:hover {
-    background: color-mix(in srgb, var(--db-card-raised) 85%, #fff);
   }
 }
 
@@ -179,30 +175,27 @@
     db-blink 1.4s ease-in-out 0.5s infinite;
 }
 
-/* 등장 - 화면 골격은 헤더 → 헤드라인 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
+/* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .db-enter {
   animation: db-enter 0.5s var(--db-ease) var(--d, 0ms) both;
 }
 
-.db-pop {
-  animation: db-pop 0.45s var(--db-spring) both;
+/* 번호·메시지 - 공용 전환(Swap) 대신 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
+.db-root .swap-content {
+  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
+  -webkit-mask-size: 250% 100%;
+  mask-size: 250% 100%;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  animation: db-write 0.9s cubic-bezier(0.65, 0, 0.35, 1)
+    calc(var(--d, 0ms) + 80ms) both;
 }
 
 @keyframes db-enter {
   from {
     opacity: 0;
     transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes db-pop {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
   }
   to {
     opacity: 1;
