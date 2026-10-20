@@ -2,7 +2,8 @@ import { useParkeContext } from '@/contexts'
 import { CopyHint, Swap } from '@/components'
 import { useCopyHint } from '@/hooks'
 import { formatPhone, cn } from '@/utils'
-import { CircleGradient, Skeleton } from '.'
+import { CircleGradient } from './circle-gradient'
+import { Skeleton } from './skeleton'
 
 export const Main = () => {
     const { phone, loading, error, copyPhone, retry, ownerMessage, message } =

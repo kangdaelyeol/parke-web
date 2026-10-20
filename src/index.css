@@ -63,57 +63,6 @@ body {
   background-color: var(--parke-surface);
 }
 
-/* 테두리 모양 마스크 - padding 안쪽(content-box)을 도려내 padding 두께만큼만 보이게 한다 */
-.border-ring {
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box exclude,
-    linear-gradient(#000 0 0);
-}
-
-/* 번호 테두리를 도는 빛 두 개 - 판을 돌리지 않고 그라데이션 각도만 돌려서, 번호 길이와 상관없이 테두리 전체를 덮는다
-   빛은 180° 간격으로 마주 보며 돌고, 12초 중 앞 6초 동안 나타나 한 바퀴 돌고 사라진 뒤 쉰다 */
-@property --border-orbit {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
-.border-orbit {
-  background: conic-gradient(
-    from var(--border-orbit),
-    transparent 0 120deg,
-    color-mix(in srgb, var(--parke-content) 58%, transparent) 165deg,
-    var(--parke-content) 180deg,
-    transparent 180deg 300deg,
-    color-mix(in srgb, var(--parke-content) 58%, transparent) 345deg,
-    var(--parke-content) 360deg
-  );
-  animation: border-orbit 12s linear infinite;
-}
-
-@keyframes border-orbit {
-  0% {
-    --border-orbit: 0deg;
-    opacity: 0;
-  }
-  15%,
-  46% {
-    opacity: 1;
-  }
-  50% {
-    --border-orbit: 360deg;
-    opacity: 0;
-  }
-  100% {
-    --border-orbit: 360deg;
-    opacity: 0;
-  }
-}
-
 /* 써 내려가기 - 경계가 부드러운 마스크를 왼쪽에서 오른쪽으로 밀어 글자가 써지듯 나타난다 (복사 안내 등)
    마스크·번짐은 키프레임 안에만 두고 fill 은 backwards 로 한다 - 끝나면 요소에 마스크가 남지 않는다
    (마스크가 남아 있으면 앱 WebView 에서 글자를 저해상도로 그려 끝난 뒤 다시 흐릿해진다) */
@@ -180,7 +129,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .border-orbit,
   .write-in,
   .swap-content {
     animation: none;
