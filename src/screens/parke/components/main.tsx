@@ -1,5 +1,5 @@
 import { useParkeContext } from '@/contexts'
-import { Swap } from '@/components'
+import { CopyHint, Swap } from '@/components'
 import { useCopyHint } from '@/hooks'
 import { formatPhone, cn } from '@/utils'
 import { CircleGradient, Skeleton } from '.'
@@ -48,12 +48,10 @@ export const Main = () => {
                             <span className="relative text-muted font-intertight font-medium text-[16px]">
                                 연락처
                                 {!loading && (
-                                    <span
-                                        className="copy-hint"
-                                        data-visible={hintVisible}
-                                    >
-                                        터치 한 번으로 번호 복사
-                                    </span>
+                                    <CopyHint
+                                        visible={hintVisible}
+                                        className="text-[13px]"
+                                    />
                                 )}
                             </span>
                             {/* 스켈레톤 높이 = 버튼 여백(p-0.5 + py-2 = 20px) + 번호 한 줄(1.5em) */}

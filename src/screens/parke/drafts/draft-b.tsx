@@ -2,14 +2,17 @@
 import './draft-b.css'
 import type { CSSProperties, PointerEvent } from 'react'
 import { Copy, Phone } from '@/illustration'
-import { Swap } from '@/components'
+import { CopyHint, Swap } from '@/components'
 import { formatPhone, cn } from '@/utils'
-import { Check, DraftError, Mark, Screen } from './shared'
+import { Check, CopiedToast, DraftError, Mark, Screen } from './shared'
 import { useActionState } from './use-action-state'
 import { useCopyFeedback } from './use-copy-feedback'
 import { useCopyHint } from '@/hooks'
 
 const COPIED_DURATION = 2000
+
+const SWAP_ICON =
+    '[grid-area:1/1] transition-[opacity,scale,rotate,filter] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]'
 
 const delay = (ms: number) => ({ '--d': `${ms}ms` }) as CSSProperties
 
@@ -74,12 +77,10 @@ export const DraftB = () => {
                             <p className="relative text-[13px] font-medium tracking-[0.01em] text-muted">
                                 차주 연락처
                                 {!loading && (
-                                    <span
-                                        className="db-hint"
-                                        data-visible={hintVisible}
-                                    >
-                                        터치 한 번으로 번호 복사
-                                    </span>
+                                    <CopyHint
+                                        visible={hintVisible}
+                                        className="tracking-[-0.005em]"
+                                    />
                                 )}
                             </p>
                             <Swap
@@ -105,7 +106,7 @@ export const DraftB = () => {
                                 </button>
                             </Swap>
 
-                            <div className="db-divider my-7 h-px preview:my-5" />
+                            <div className="my-7 h-px bg-linear-to-r from-transparent via-[var(--db-edge)] to-transparent preview:my-5" />
 
                             <p className="text-[13px] font-medium tracking-[0.01em] text-muted">
                                 남긴 메시지
@@ -133,21 +134,10 @@ export const DraftB = () => {
                 className="db-rise relative z-10 flex gap-3"
                 style={delay(180)}
             >
-                <div className="db-toast-anchor" aria-hidden>
-                    <div className="db-toast" data-visible={copied}>
-                        <span className="db-toast-icon">
-                            <Check
-                                key={String(copied)}
-                                size={12}
-                                className="db-check-draw"
-                            />
-                        </span>
-                        복사되었어요
-                    </div>
-                </div>
-                <span className="sr-only" aria-live="polite">
-                    {copied && '전화번호가 복사되었어요'}
-                </span>
+                <CopiedToast
+                    copied={copied}
+                    className="db-toast rounded-full py-2 pr-4 pl-2 tracking-[-0.01em] text-content"
+                />
                 <button
                     type="button"
                     onClick={handleCopy}
@@ -155,12 +145,26 @@ export const DraftB = () => {
                     data-copied={copied}
                     aria-label={copied ? '복사됨' : '번호 복사'}
                     className={cn(
-                        'db-glass-btn db-swap size-[60px] shrink-0 cursor-pointer place-items-center rounded-button',
+                        'db-glass-btn group grid size-[60px] shrink-0 cursor-pointer place-items-center rounded-button',
                         disabledStyle,
                     )}
                 >
-                    <Copy size={22} />
-                    <Check size={22} />
+                    {/* 복사하면 복사 아이콘이 돌며 사라지고 체크가 돌며 나타난다 */}
+                    <Copy
+                        size={22}
+                        className={cn(
+                            SWAP_ICON,
+                            'group-data-[copied=true]:scale-60 group-data-[copied=true]:rotate-15 group-data-[copied=true]:opacity-0 group-data-[copied=true]:blur-xs',
+                        )}
+                    />
+                    <Check
+                        size={22}
+                        className={cn(
+                            SWAP_ICON,
+                            '-rotate-15 scale-60 text-accent opacity-0 blur-xs',
+                            'group-data-[copied=true]:rotate-0 group-data-[copied=true]:scale-100 group-data-[copied=true]:opacity-100 group-data-[copied=true]:blur-none',
+                        )}
+                    />
                 </button>
                 <a
                     href={telHref}

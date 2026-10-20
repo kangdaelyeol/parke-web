@@ -2,9 +2,9 @@
 import './draft-d.css'
 import type { CSSProperties } from 'react'
 import { Phone } from '@/illustration'
-import { Swap } from '@/components'
+import { CopyHint, Swap } from '@/components'
 import { formatPhone, cn } from '@/utils'
-import { Check, DraftError, Mark, Screen } from './shared'
+import { CopiedToast, DraftError, Mark, Screen } from './shared'
 import { useActionState } from './use-action-state'
 import { useCopyFeedback } from './use-copy-feedback'
 import { useCopyHint } from '@/hooks'
@@ -59,12 +59,10 @@ export const DraftD = () => {
                         >
                             차주 연락처
                             {!loading && (
-                                <span
-                                    className="dd-hint"
-                                    data-visible={hintVisible}
-                                >
-                                    터치 한 번으로 번호 복사
-                                </span>
+                                <CopyHint
+                                    visible={hintVisible}
+                                    className="bottom-[calc(100%+8px)] left-1/2 -translate-x-1/2 text-[13px] font-medium"
+                                />
                             )}
                         </p>
 
@@ -82,18 +80,16 @@ export const DraftD = () => {
                                 type="button"
                                 onClick={handleCopy}
                                 aria-label={`${formatPhone(phone)} 복사`}
-                                className="relative cursor-pointer"
+                                className="cursor-pointer"
                             >
                                 <span
                                     className={cn(
-                                        'dd-number block whitespace-nowrap font-semibold leading-[1.1] tracking-[-0.03em] tabular-nums',
+                                        'block transition-opacity duration-200 [-webkit-tap-highlight-color:transparent] active:opacity-60 whitespace-nowrap font-semibold leading-[1.1] tracking-[-0.03em] tabular-nums',
                                         NUMBER_SIZE,
                                     )}
                                 >
                                     {formatPhone(phone)}
                                 </span>
-                                {/* 레이아웃에 영향이 없도록 번호 아래에 겹쳐 그린다 */}
-                                <span className="dd-underline" aria-hidden />
                             </button>
                         </Swap>
 
@@ -111,37 +107,16 @@ export const DraftD = () => {
                                 {ownerMessage}
                             </p>
                         </Swap>
-
-                        <button
-                            type="button"
-                            onClick={handleCopy}
-                            disabled={disabled}
-                            className={cn(
-                                'dd-link dd-enter mt-8 cursor-pointer text-[17px] font-medium preview:mt-5',
-                                disabledStyle,
-                            )}
-                            style={delay(160)}
-                        >
-                            번호 복사하기 ›
-                        </button>
                     </>
                 )}
             </main>
 
             <footer className="dd-enter relative" style={delay(240)}>
-                <div className="dd-toast-anchor" aria-hidden>
-                    <div className="dd-toast" data-visible={copied}>
-                        <Check
-                            key={String(copied)}
-                            size={16}
-                            className="dd-check-draw"
-                        />
-                        복사되었어요
-                    </div>
-                </div>
-                <span className="sr-only" aria-live="polite">
-                    {copied && '전화번호가 복사되었어요'}
-                </span>
+                <CopiedToast
+                    copied={copied}
+                    icon="plain"
+                    className="translate-y-2 scale-100 gap-1.5 text-[15px] text-content ease-[cubic-bezier(0.22,1,0.36,1)]"
+                />
                 <a
                     href={telHref}
                     aria-disabled={disabled}

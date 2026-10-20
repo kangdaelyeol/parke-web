@@ -81,6 +81,11 @@
 
 .dc-root {
   --dc-accent-pressed: color-mix(in srgb, var(--parke-accent) 85%, #000);
+  --copy-hint-color: color-mix(
+    in srgb,
+    var(--parke-accent) 75%,
+    var(--parke-content)
+  );
   --dc-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --dc-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -236,82 +241,6 @@
   }
 }
 
-/* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
-.dc-hint {
-  position: absolute;
-  left: 0;
-  bottom: calc(100% + 6px);
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
-  color: color-mix(in srgb, var(--parke-accent) 75%, var(--parke-content));
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  -webkit-mask-size: 250% 100%;
-  mask-size: 250% 100%;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
-  animation: dc-write 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
-  transition: opacity 0.4s var(--dc-ease);
-}
-
-.dc-hint[data-visible="false"] {
-  opacity: 0;
-}
-
-/* 하단 버튼 위 복사 완료 토스트 */
-.dc-toast-anchor {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(100% + 14px);
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.dc-toast {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px 8px 8px;
-  border-radius: 999px;
-  background: var(--dc-toast-bg);
-  color: var(--dc-toast-fg);
-  font-size: 14px;
-  font-weight: 600;
-  -webkit-backdrop-filter: blur(16px);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 14px 36px -12px rgba(0, 0, 0, 0.7);
-  opacity: 0;
-  transform: translateY(10px) scale(0.95);
-  transition:
-    opacity 0.3s var(--dc-ease),
-    transform 0.45s var(--dc-spring);
-}
-
-.dc-toast[data-visible="true"] {
-  opacity: 1;
-  transform: none;
-}
-
-.dc-toast-icon {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--parke-accent);
-  color: var(--parke-on-accent);
-}
-
-.dc-check-draw polyline {
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-  animation: dc-draw 0.45s var(--dc-ease) 0.1s forwards;
-}
-
 /* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .dc-enter {
   animation: dc-enter 0.5s var(--dc-ease) var(--d, 0ms) both;
@@ -325,7 +254,7 @@
   mask-size: 250% 100%;
   -webkit-mask-position: 0 0;
   mask-position: 0 0;
-  animation: dc-write 0.9s cubic-bezier(0.65, 0, 0.35, 1)
+  animation: write-in 0.9s cubic-bezier(0.65, 0, 0.35, 1)
     calc(var(--d, 0ms) + 80ms) both;
 }
 
@@ -340,34 +269,11 @@
   }
 }
 
-@keyframes dc-write {
-  from {
-    -webkit-mask-position: 100% 0;
-    mask-position: 100% 0;
-    filter: blur(3px);
-  }
-  to {
-    -webkit-mask-position: 0 0;
-    mask-position: 0 0;
-    filter: none;
-  }
-}
-
-@keyframes dc-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .dc-root *,
   .dc-root *::before,
   .dc-root *::after {
     animation: none !important;
     transition: none !important;
-  }
-
-  .dc-check-draw polyline {
-    stroke-dashoffset: 0;
   }
 }

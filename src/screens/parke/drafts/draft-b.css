@@ -186,10 +186,6 @@
   }
 }
 
-.db-divider {
-  background: linear-gradient(90deg, transparent, var(--db-edge), transparent);
-}
-
 /* 입체 전화 버튼 */
 .db-call {
   position: relative;
@@ -265,119 +261,16 @@
   }
 }
 
-/* 복사 아이콘/문구 전환 */
-.db-swap {
-  display: grid;
-}
-
-.db-swap > * {
-  grid-area: 1 / 1;
-  transition:
-    opacity 0.3s var(--db-ease),
-    transform 0.45s var(--db-ease),
-    filter 0.3s var(--db-ease);
-}
-
-.db-swap > :last-child {
-  color: var(--parke-accent);
-  opacity: 0;
-  transform: scale(0.6) rotate(-15deg);
-  filter: blur(4px);
-}
-
-.db-swap[data-copied="true"] > :first-child {
-  opacity: 0;
-  transform: scale(0.6) rotate(15deg);
-  filter: blur(4px);
-}
-
-.db-swap[data-copied="true"] > :last-child {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
-.db-hint {
-  position: absolute;
-  left: 0;
-  bottom: calc(100% + 6px);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  white-space: nowrap;
-  color: color-mix(in srgb, var(--parke-accent) 55%, var(--parke-content));
-  pointer-events: none;
-  /* 부드러운 경계를 가진 마스크를 왼쪽에서 오른쪽으로 민다 */
-  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  -webkit-mask-size: 250% 100%;
-  mask-size: 250% 100%;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
-  animation: db-write 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
-  transition: opacity 0.4s var(--db-ease);
-}
-
-.db-hint[data-visible="false"] {
-  opacity: 0;
-}
-
-/* 하단 버튼 위 복사 완료 토스트 */
-.db-toast-anchor {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(100% + 14px);
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
-
+/* 하단 "복사되었어요" 알림의 유리 질감 - 배치와 나타나는 동작은 CopiedToast(Tailwind) 가 맡는다 */
 .db-toast {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px 8px 8px;
-  border-radius: 999px;
   background: color-mix(
     in srgb,
     color-mix(in srgb, var(--parke-content) 16%, var(--parke-surface)) 88%,
     transparent
   );
-  color: var(--parke-content);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   backdrop-filter: blur(20px) saturate(160%);
   box-shadow: 0 14px 36px -12px var(--db-shadow);
-  opacity: 0;
-  transform: translateY(10px) scale(0.95);
-  transition:
-    opacity 0.3s var(--db-ease),
-    transform 0.45s var(--db-spring);
-}
-
-.db-toast[data-visible="true"] {
-  opacity: 1;
-  transform: none;
-}
-
-.db-toast-icon {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--parke-accent);
-  color: var(--parke-on-accent);
-}
-
-.db-check-draw polyline {
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-  animation: db-draw 0.45s var(--db-ease) 0.1s forwards;
 }
 
 /* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
@@ -417,25 +310,6 @@
   }
 }
 
-@keyframes db-write {
-  from {
-    -webkit-mask-position: 100% 0;
-    mask-position: 100% 0;
-    filter: blur(3px);
-  }
-  to {
-    -webkit-mask-position: 0 0;
-    mask-position: 0 0;
-    filter: none;
-  }
-}
-
-@keyframes db-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 @keyframes db-float-1 {
   to {
     transform: translate(12vmax, 10vmax) scale(1.1);
@@ -464,9 +338,5 @@
   .db-root *::after {
     animation: none !important;
     transition: none !important;
-  }
-
-  .db-check-draw polyline {
-    stroke-dashoffset: 0;
   }
 }

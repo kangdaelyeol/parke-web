@@ -24,7 +24,7 @@
   --parke-content: #f5f5f7;
   --parke-muted: #86868b;
   --dd-body: #a1a1a6;
-  /* 어두운 배경에서는 강조색을 밝혀서 링크로 쓴다 (애플 다크 페이지의 #2997ff 느낌) */
+  /* 어두운 배경에서는 강조색을 밝혀서 안내 문구·체크 아이콘에 쓴다 (애플 다크 페이지의 #2997ff 느낌) */
   --dd-link: color-mix(in srgb, var(--parke-accent) 65%, #fff);
 }
 
@@ -52,6 +52,8 @@
 
 .dd-root {
   --parke-line: transparent;
+  /* 복사 안내와 "복사되었어요" 체크 색 */
+  --copy-hint-color: var(--dd-link);
   --dd-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   background: var(--parke-surface);
@@ -61,93 +63,6 @@
     "Noto Sans KR", sans-serif;
   letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;
-}
-
-/* 텍스트 링크 - 배경 없이 색과 밑줄만 */
-.dd-link {
-  color: var(--dd-link);
-  transition:
-    opacity 0.45s var(--dd-ease) 0.15s,
-    transform 0.3s var(--dd-ease);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.dd-link:active {
-  transform: scale(0.97);
-  transition-duration: 0.1s;
-}
-
-@media (hover: hover) {
-  .dd-link:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-}
-
-.dd-number {
-  transition: opacity 0.2s var(--dd-ease);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.dd-number:active {
-  opacity: 0.6;
-}
-
-/* 번호 아래 가는 선 - 가운데서 양옆으로 펼쳐진 뒤, 강조색 빛이 왼쪽에서 오른쪽으로 계속 흐른다
-   빛은 진행 방향(오른쪽 끝)으로 갈수록 밝아지고 끝에서 끊긴다 */
-.dd-underline {
-  position: absolute;
-  left: 4%;
-  right: 4%;
-  bottom: -10px;
-  height: 1px;
-  border-radius: 999px;
-  /* 빛줄기는 처음부터 선 왼쪽 밖(-100%)에 두어, 선이 펼쳐지는 동안 보이지 않다가 흐름이 시작되면 들어온다 */
-  background:
-    linear-gradient(
-        90deg,
-        transparent,
-        var(--dd-link) 70%,
-        var(--parke-content) 100%
-      ) -100%
-      0 / 50% 100% no-repeat,
-    linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--parke-content) 22%, transparent) 20%,
-      color-mix(in srgb, var(--parke-content) 22%, transparent) 80%,
-      transparent
-    );
-  /* 선을 펼친 뒤, A 처럼 앞 절반 동안 한 번 흐르고 사라진 뒤 쉰다 */
-  animation:
-    dd-underline-in 0.9s var(--dd-ease) 0.3s both,
-    dd-underline-flow 3.2s cubic-bezier(0.45, 0, 0.55, 1) 1.2s infinite;
-}
-
-@keyframes dd-underline-in {
-  from {
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  to {
-    transform: none;
-    opacity: 1;
-  }
-}
-
-/* 빛줄기(폭 50%)를 선 왼쪽 밖에서 오른쪽 밖으로 - 오른쪽 밖에 머무는 동안은 보이지 않는다 */
-@keyframes dd-underline-flow {
-  0% {
-    background-position:
-      -100% 0,
-      0 0;
-  }
-  50%,
-  100% {
-    background-position:
-      200% 0,
-      0 0;
-  }
 }
 
 /* 전화하기 - 애플 사이트의 파란 알약 버튼 */
@@ -173,72 +88,7 @@
   }
 }
 
-/* "차주 연락처" 위의 복사 안내 - 왼쪽에서 오른쪽으로 써 내려가듯 나타난다 */
-.dd-hint {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 8px);
-  translate: -50% 0;
-  font-size: 13px;
-  font-weight: 500;
-  white-space: nowrap;
-  color: var(--dd-link);
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  mask-image: linear-gradient(90deg, #000 0 40%, transparent 60%);
-  -webkit-mask-size: 250% 100%;
-  mask-size: 250% 100%;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
-  animation: dd-write 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s both;
-  transition: opacity 0.4s var(--dd-ease);
-}
-
-.dd-hint[data-visible="false"] {
-  opacity: 0;
-}
-
-/* 하단 버튼 위 복사 완료 알림 - 배경 없이 글자만 */
-.dd-toast-anchor {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(100% + 14px);
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.dd-toast {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--parke-content);
-  font-size: 15px;
-  font-weight: 600;
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 0.3s var(--dd-ease),
-    transform 0.45s var(--dd-ease);
-}
-
-.dd-toast[data-visible="true"] {
-  opacity: 1;
-  transform: none;
-}
-
-.dd-toast svg {
-  color: var(--dd-link);
-}
-
-.dd-check-draw polyline {
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-  animation: dd-draw 0.45s var(--dd-ease) 0.1s forwards;
-}
-
-/* 등장 - 화면 골격은 헤더 → 레이블 → 링크 → 버튼 순, 데이터는 번호 → 메시지 순 */
+/* 등장 - 화면 골격은 헤더 → 레이블 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .dd-enter {
   animation: dd-enter 0.6s var(--dd-ease) var(--d, 0ms) both;
 }
@@ -254,34 +104,11 @@
   }
 }
 
-@keyframes dd-write {
-  from {
-    -webkit-mask-position: 100% 0;
-    mask-position: 100% 0;
-    filter: blur(3px);
-  }
-  to {
-    -webkit-mask-position: 0 0;
-    mask-position: 0 0;
-    filter: none;
-  }
-}
-
-@keyframes dd-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .dd-root *,
   .dd-root *::before,
   .dd-root *::after {
     animation: none !important;
     transition: none !important;
-  }
-
-  .dd-check-draw polyline {
-    stroke-dashoffset: 0;
   }
 }

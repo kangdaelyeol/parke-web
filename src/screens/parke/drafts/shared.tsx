@@ -37,6 +37,55 @@ export const Check = ({
     </svg>
 )
 
+// 하단 버튼 위 "복사되었어요" 알림 - 모양은 레이아웃마다 className 으로 정한다
+// circle: 강조색 동그라미 안에 체크 / plain: 체크만 (색은 --copy-hint-color)
+export const CopiedToast = ({
+    copied,
+    icon = 'circle',
+    className,
+}: {
+    copied: boolean
+    icon?: 'circle' | 'plain'
+    className?: string
+}) => (
+    <>
+        <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-[calc(100%+14px)] flex justify-center"
+        >
+            <div
+                data-visible={copied}
+                className={cn(
+                    'flex items-center gap-2 text-[14px] font-semibold',
+                    'translate-y-2.5 scale-95 opacity-0 transition-[opacity,translate,scale] duration-450 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+                    'data-[visible=true]:translate-y-0 data-[visible=true]:scale-100 data-[visible=true]:opacity-100',
+                    className,
+                )}
+            >
+                {icon === 'circle' ? (
+                    <span className="grid size-[22px] place-items-center rounded-full bg-accent text-on-accent">
+                        <Check
+                            key={String(copied)}
+                            size={12}
+                            className="check-draw"
+                        />
+                    </span>
+                ) : (
+                    <Check
+                        key={String(copied)}
+                        size={16}
+                        className="check-draw text-[color:var(--copy-hint-color)]"
+                    />
+                )}
+                복사되었어요
+            </div>
+        </div>
+        <span className="sr-only" aria-live="polite">
+            {copied && '전화번호가 복사되었어요'}
+        </span>
+    </>
+)
+
 export const Screen = ({
     children,
     className,

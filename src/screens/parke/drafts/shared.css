@@ -51,9 +51,27 @@
   }
 }
 
+/* 체크 표시 그리기 */
+.check-draw polyline {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: check-draw 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+
+@keyframes check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .draft-page {
     animation: none;
+  }
+
+  .check-draw polyline {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 
   /* 움직이지 않을 때는 빛줄기를 가운데에 고정해 모양이 보이게 한다 */

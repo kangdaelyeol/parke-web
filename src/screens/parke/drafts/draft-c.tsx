@@ -2,9 +2,9 @@
 import './draft-c.css'
 import type { CSSProperties } from 'react'
 import { Phone } from '@/illustration'
-import { Swap } from '@/components'
+import { CopyHint, Swap } from '@/components'
 import { formatPhone, cn } from '@/utils'
-import { Check, DraftError, Mark, Screen } from './shared'
+import { CopiedToast, DraftError, Mark, Screen } from './shared'
 import { useActionState } from './use-action-state'
 import { useCopyFeedback } from './use-copy-feedback'
 import { useCopyHint } from '@/hooks'
@@ -69,12 +69,7 @@ export const DraftC = () => {
                                 <span className="relative block text-[14px] font-medium text-muted">
                                     차주 연락처
                                     {!loading && (
-                                        <span
-                                            className="dc-hint"
-                                            data-visible={hintVisible}
-                                        >
-                                            터치 한 번으로 번호 복사
-                                        </span>
+                                        <CopyHint visible={hintVisible} />
                                     )}
                                 </span>
 
@@ -127,21 +122,10 @@ export const DraftC = () => {
             </main>
 
             <footer className="dc-enter relative" style={delay(180)}>
-                <div className="dc-toast-anchor" aria-hidden>
-                    <div className="dc-toast" data-visible={copied}>
-                        <span className="dc-toast-icon">
-                            <Check
-                                key={String(copied)}
-                                size={12}
-                                className="dc-check-draw"
-                            />
-                        </span>
-                        복사되었어요
-                    </div>
-                </div>
-                <span className="sr-only" aria-live="polite">
-                    {copied && '전화번호가 복사되었어요'}
-                </span>
+                <CopiedToast
+                    copied={copied}
+                    className="rounded-full bg-[var(--dc-toast-bg)] py-2 pr-4 pl-2 text-[color:var(--dc-toast-fg)] shadow-[0_14px_36px_-12px_rgba(0,0,0,0.7)] backdrop-blur-lg"
+                />
                 <a
                     href={telHref}
                     aria-disabled={disabled}
