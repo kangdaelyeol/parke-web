@@ -25,24 +25,25 @@ export const DraftC = () => {
         copyPhone,
         ownerMessage,
         disabled,
+        copyBlocked,
         telHref,
         disabledStyle,
     } = useActionState()
 
     const { copied, handleCopy } = useCopyFeedback(
         copyPhone,
-        disabled,
+        copyBlocked,
         COPIED_DURATION,
     )
     const { hintVisible } = useCopyHint(loading, copied)
 
     return (
         <Screen className="dc-root px-5">
-            <header className="dc-enter pt-5" style={delay(0)}>
+            <header className="dc-enter pt-5 preview:pt-4" style={delay(0)}>
                 <Mark className="w-8" />
             </header>
 
-            <main className="flex flex-1 flex-col justify-center gap-3 py-8">
+            <main className="flex flex-1 flex-col justify-center gap-3 py-8 preview:py-4">
                 {error ? (
                     <div className="dc-enter dc-card p-6" style={delay(60)}>
                         <DraftError />
@@ -60,8 +61,11 @@ export const DraftC = () => {
                                         ? undefined
                                         : `${formatPhone(phone)} 복사`
                                 }
-                                className="dc-card dc-card-press block w-full cursor-pointer p-6 text-left disabled:cursor-default"
+                                className="dc-card dc-card-press relative block w-full cursor-pointer p-6 text-left disabled:cursor-default"
                             >
+                                {!loading && (
+                                    <span className="dc-ring" aria-hidden />
+                                )}
                                 <span className="relative block text-[14px] font-medium text-muted">
                                     차주 연락처
                                     {!loading && (

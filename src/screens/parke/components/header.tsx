@@ -2,7 +2,7 @@ import AppLogo from '@/images/app-logo.png'
 
 export const Header = () => {
     return (
-        <div className="h-20 w-full">
+        <div className="h-20 w-full preview:h-14">
             <div className="w-full mx-auto max-w-[440px] px-2">
                 <img
                     src={AppLogo}

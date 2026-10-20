@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+KR:wght@100..900&display=swap");
 @import "tailwindcss";
 
+/* 앱의 카드 수정 화면 미리보기(높이 약 420px)에서만 적용 - preview:pt-4 처럼 쓴다 */
+@custom-variant preview (&:where([data-preview], [data-preview] *));
+
 /* theme tokens - card/{id}/theme 값이 <html data-theme>에 적용된다 (src/themes.ts) */
 :root {
   --parke-surface: #000000;

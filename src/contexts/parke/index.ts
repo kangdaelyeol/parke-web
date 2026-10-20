@@ -1,5 +1,10 @@
 import { createContext, useContext } from 'react'
-import { DEFAULT_THEME, type Theme } from '@/themes'
+import {
+    DEFAULT_LAYOUT,
+    DEFAULT_THEME,
+    type Layout,
+    type Theme,
+} from '@/themes'
 
 interface ParkeContextValue {
     copyPhone: () => void
@@ -9,7 +14,11 @@ interface ParkeContextValue {
     phone: string
     error: string
     theme: Theme
+    layout: Layout
+    title: string
     ownerMessage: string
+    // 앱의 카드 수정 화면 미리보기 - 전화·복사는 동작하지 않는다
+    preview: boolean
 }
 
 export const ParkeContext = createContext({
@@ -20,7 +29,10 @@ export const ParkeContext = createContext({
     phone: '',
     error: '',
     theme: DEFAULT_THEME,
+    layout: DEFAULT_LAYOUT,
+    title: '',
     ownerMessage: '',
+    preview: false,
 } as ParkeContextValue)
 
 export const useParkeContext = () => {

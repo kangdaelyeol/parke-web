@@ -1,16 +1,57 @@
 /* 시안 D 전용 - 시안 확정 후 정리 */
 
+/* 테마별 애플 팔레트 - 강조색은 테마 / custom.accent 를 그대로 따른다 */
+
+/* 가운데 모바일 영역 바깥(PC 화면의 양옆, body)까지 같은 배경색으로 칠한다 */
+:root:has(.dd-root) {
+  --parke-surface: #000000;
+}
+
+:root[data-theme="light"]:has(.dd-root) {
+  --parke-surface: #fbfbfd;
+}
+
+:root[data-theme="amber"]:has(.dd-root) {
+  --parke-surface: #0f0c07;
+}
+
+:root[data-theme="mint"]:has(.dd-root) {
+  --parke-surface: #050e0b;
+}
+
 .dd-root {
-  /* 시안 D는 애플 다크 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
   --parke-surface: #000000;
   --parke-content: #f5f5f7;
   --parke-muted: #86868b;
-  --parke-line: transparent;
-  --parke-accent: #0071e3;
-  --parke-on-accent: #ffffff;
-
-  --dd-link: #2997ff;
   --dd-body: #a1a1a6;
+  /* 어두운 배경에서는 강조색을 밝혀서 링크로 쓴다 (애플 다크 페이지의 #2997ff 느낌) */
+  --dd-link: color-mix(in srgb, var(--parke-accent) 65%, #fff);
+}
+
+[data-theme="light"] .dd-root {
+  --parke-surface: #fbfbfd;
+  --parke-content: #1d1d1f;
+  --parke-muted: #6e6e73;
+  --dd-body: #424245;
+  --dd-link: color-mix(in srgb, var(--parke-accent) 90%, #000);
+}
+
+[data-theme="amber"] .dd-root {
+  --parke-surface: #0f0c07;
+  --parke-content: #f5e9d0;
+  --parke-muted: #9c8a66;
+  --dd-body: #cdbb98;
+}
+
+[data-theme="mint"] .dd-root {
+  --parke-surface: #050e0b;
+  --parke-content: #eafff5;
+  --parke-muted: #7fa393;
+  --dd-body: #b5d6c7;
+}
+
+.dd-root {
+  --parke-line: transparent;
   --dd-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   background: var(--parke-surface);
@@ -52,6 +93,60 @@
   opacity: 0.6;
 }
 
+/* 번호 아래 가는 선 - 가운데서 양옆으로 펼쳐진 뒤, 강조색 빛이 왼쪽에서 오른쪽으로 계속 흐른다
+   빛은 진행 방향(오른쪽 끝)으로 갈수록 밝아지고 끝에서 끊긴다 */
+.dd-underline {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -10px;
+  height: 1.5px;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+        90deg,
+        transparent,
+        var(--dd-link) 70%,
+        var(--parke-content) 100%
+      )
+      0 0 / 50% 100% no-repeat,
+    linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--parke-content) 22%, transparent) 20%,
+      color-mix(in srgb, var(--parke-content) 22%, transparent) 80%,
+      transparent
+    );
+  animation:
+    dd-underline-in 0.9s var(--dd-ease) 0.3s both,
+    dd-underline-flow 2.8s cubic-bezier(0.45, 0, 0.55, 1) 1.2s infinite;
+}
+
+@keyframes dd-underline-in {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* 빛줄기(폭 50%)를 선 왼쪽 밖에서 오른쪽 밖으로 */
+@keyframes dd-underline-flow {
+  from {
+    background-position:
+      -100% 0,
+      0 0;
+  }
+  to {
+    background-position:
+      200% 0,
+      0 0;
+  }
+}
+
 /* 전화하기 - 애플 사이트의 파란 알약 버튼 */
 .dd-cta {
   background: var(--parke-accent);
@@ -65,13 +160,13 @@
 
 .dd-cta:active {
   transform: scale(0.98);
-  background: #006edb;
+  background: color-mix(in srgb, var(--parke-accent) 90%, #000);
   transition-duration: 0.1s;
 }
 
 @media (hover: hover) {
   .dd-cta:hover {
-    background: #0077ed;
+    background: color-mix(in srgb, var(--parke-accent) 92%, #fff);
   }
 }
 

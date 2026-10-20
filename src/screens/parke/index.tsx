@@ -4,8 +4,8 @@ import { ToasterMessage } from '@/components'
 import { Main, Header, Footer } from '@/screens/parke/components'
 import { DraftB, DraftC, DraftD, DraftSwitcher } from '@/screens/parke/drafts'
 
-// 임시 시안 - A는 기본 화면, ?v=b|c|d 로 나머지 확인, 시안 확정 후 삭제
-const DRAFTS: Record<string, () => React.JSX.Element> = {
+// 레이아웃 - card/{id}/layout 값으로 고른다. A는 기본 화면, ?v=a|b|c|d 로 덮어써서 확인할 수 있다
+const DRAFTS: Partial<Record<string, () => React.JSX.Element>> = {
     b: DraftB,
     c: DraftC,
     d: DraftD,
@@ -15,10 +15,15 @@ const DRAFTS: Record<string, () => React.JSX.Element> = {
 const INLINE_COPY_FEEDBACK = ['b', 'c', 'd']
 
 const ParkeContent = () => {
-    const { message } = useParkeContext()
+    const { message, layout, preview, loading } = useParkeContext()
     const [searchParams] = useSearchParams()
-    const version = searchParams.get('v')
-    const Draft = version ? DRAFTS[version] : undefined
+    const version = searchParams.get('v') ?? layout
+    const Draft = DRAFTS[version]
+
+    // 레이아웃은 카드 데이터와 함께 오므로, 정해지기 전에는 다른 레이아웃이 잠깐 보이지 않도록 배경만 칠한다
+    if (loading && !searchParams.has('v')) {
+        return <div className="fixed inset-0 bg-surface" />
+    }
 
     return (
         <>
@@ -33,8 +38,10 @@ const ParkeContent = () => {
                     </div>
                 )}
             </div>
-            {(import.meta.env.DEV || version) && <DraftSwitcher />}
-            {message && !INLINE_COPY_FEEDBACK.includes(version ?? '') && (
+            {!preview && (import.meta.env.DEV || searchParams.has('v')) && (
+                <DraftSwitcher />
+            )}
+            {message && !INLINE_COPY_FEEDBACK.includes(version) && (
                 <ToasterMessage message={message} />
             )}
         </>

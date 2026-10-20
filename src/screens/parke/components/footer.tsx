@@ -3,7 +3,7 @@ import { Copy, Phone } from '@/illustration'
 import { cn } from '@/utils'
 
 export const Footer = () => {
-    const { copyPhone, phone, loading, error } = useParkeContext()
+    const { copyPhone, phone, loading, error, preview } = useParkeContext()
     const disabled = loading || !!error || !phone
 
     return (
@@ -23,7 +23,8 @@ export const Footer = () => {
                     <span className="font-medium">복사</span>
                 </button>
                 <a
-                    href={disabled ? undefined : `tel:${phone}`}
+                    // 미리보기에서는 모양은 그대로 두고 전화만 막는다
+                    href={disabled || preview ? undefined : `tel:${phone}`}
                     aria-disabled={disabled}
                     className={cn(
                         buttonStyle,

@@ -12,7 +12,7 @@ export const Main = () => {
     const { hintVisible } = useCopyHint(loading, !!message)
 
     return (
-        <div className="text-content w-full px-6 pt-30">
+        <div className="text-content w-full px-6 pt-30 preview:pt-6">
             <div className="w-full max-w-[440px] relative mx-auto">
                 <CircleGradient />
                 {error ? (

@@ -25,13 +25,14 @@ export const DraftD = () => {
         copyPhone,
         ownerMessage,
         disabled,
+        copyBlocked,
         telHref,
         disabledStyle,
     } = useActionState()
 
     const { copied, handleCopy } = useCopyFeedback(
         copyPhone,
-        disabled,
+        copyBlocked,
         COPIED_DURATION,
     )
     const { hintVisible } = useCopyHint(loading, copied)
@@ -39,13 +40,13 @@ export const DraftD = () => {
     return (
         <Screen className="dd-root">
             <header
-                className="dd-enter flex justify-center pt-6"
+                className="dd-enter flex justify-center pt-6 preview:pt-4"
                 style={delay(0)}
             >
                 <Mark className="w-7" />
             </header>
 
-            <main className="flex flex-1 flex-col items-center justify-center py-12 text-center">
+            <main className="flex flex-1 flex-col items-center justify-center py-12 text-center preview:py-4">
                 {error ? (
                     <div className="dd-enter" style={delay(80)}>
                         <DraftError />
@@ -81,7 +82,7 @@ export const DraftD = () => {
                                 type="button"
                                 onClick={handleCopy}
                                 aria-label={`${formatPhone(phone)} 복사`}
-                                className="cursor-pointer"
+                                className="relative cursor-pointer"
                             >
                                 <span
                                     className={cn(
@@ -91,13 +92,15 @@ export const DraftD = () => {
                                 >
                                     {formatPhone(phone)}
                                 </span>
+                                {/* 레이아웃에 영향이 없도록 번호 아래에 겹쳐 그린다 */}
+                                <span className="dd-underline" aria-hidden />
                             </button>
                         </Swap>
 
                         <Swap
                             loading={loading}
                             delayMs={90}
-                            className="mt-5 justify-items-center"
+                            className="mt-5 justify-items-center preview:mt-3"
                             skeleton={
                                 <div className="py-[0.25em] text-[length:calc(21px*var(--parke-scale))]">
                                     <div className="draft-skeleton mx-auto h-[1em] w-[60%]" />
@@ -114,7 +117,7 @@ export const DraftD = () => {
                             onClick={handleCopy}
                             disabled={disabled}
                             className={cn(
-                                'dd-link dd-enter mt-8 cursor-pointer text-[17px] font-medium',
+                                'dd-link dd-enter mt-8 cursor-pointer text-[17px] font-medium preview:mt-5',
                                 disabledStyle,
                             )}
                             style={delay(160)}

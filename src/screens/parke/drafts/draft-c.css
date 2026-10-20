@@ -1,21 +1,86 @@
 /* 시안 C 전용 - 시안 확정 후 정리 */
 
-/* 가운데 모바일 영역 바깥(PC 화면의 양옆, body)까지 같은 회색으로 칠해 배경이 끊겨 보이지 않게 한다 */
+/* 테마별 Toss 팔레트 - 강조색은 테마 / custom.accent 를 그대로 따른다 */
+
+/* 가운데 모바일 영역 바깥(PC 화면의 양옆, body)까지 같은 배경색으로 칠해 끊겨 보이지 않게 한다 */
 :root:has(.dc-root) {
   --parke-surface: #17171c;
 }
+
+:root[data-theme="light"]:has(.dc-root) {
+  --parke-surface: #f2f4f6;
+}
+
+:root[data-theme="amber"]:has(.dc-root) {
+  --parke-surface: #17130c;
+}
+
+:root[data-theme="mint"]:has(.dc-root) {
+  --parke-surface: #0b1612;
+}
+
 .dc-root {
-  /* 시안 C는 Toss 팔레트로 고정 - 테마/커스텀 색을 덮어쓴다 */
   --parke-surface: #17171c;
   --parke-content: #ffffff;
   --parke-muted: #8b95a1;
   --parke-line: rgba(255, 255, 255, 0.08);
-  --parke-accent: #3182f6;
-  --parke-on-accent: #ffffff;
 
   --dc-card: #222229;
+  --dc-card-hover: #27272f;
+  --dc-card-active: #2b2b33;
   --dc-body: #e5e8eb;
-  --dc-accent-pressed: #1b64da;
+  --dc-toast-bg: rgba(44, 44, 53, 0.94);
+  --dc-toast-fg: #ffffff;
+  --dc-shadow: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .dc-root {
+  --parke-surface: #f2f4f6;
+  --parke-content: #191f28;
+  --parke-muted: #8b95a1;
+  --parke-line: rgba(0, 0, 0, 0.04);
+
+  --dc-card: #ffffff;
+  --dc-card-hover: #fafbfc;
+  --dc-card-active: #f4f5f7;
+  --dc-body: #333d4b;
+  --dc-toast-bg: rgba(25, 31, 40, 0.92);
+  --dc-toast-fg: #ffffff;
+  --dc-shadow: rgba(0, 27, 55, 0.08);
+}
+
+[data-theme="amber"] .dc-root {
+  --parke-surface: #17130c;
+  --parke-content: #f5e9d0;
+  --parke-muted: #9c8a66;
+  --parke-line: rgba(245, 233, 208, 0.08);
+
+  --dc-card: #211b12;
+  --dc-card-hover: #272016;
+  --dc-card-active: #2c2419;
+  --dc-body: #e9dcc0;
+  --dc-toast-bg: rgba(50, 42, 28, 0.94);
+  --dc-toast-fg: #f5e9d0;
+  --dc-shadow: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="mint"] .dc-root {
+  --parke-surface: #0b1612;
+  --parke-content: #eafff5;
+  --parke-muted: #7fa393;
+  --parke-line: rgba(234, 255, 245, 0.08);
+
+  --dc-card: #12201a;
+  --dc-card-hover: #172720;
+  --dc-card-active: #1b2d25;
+  --dc-body: #d3efe2;
+  --dc-toast-bg: rgba(28, 48, 40, 0.94);
+  --dc-toast-fg: #eafff5;
+  --dc-shadow: rgba(0, 0, 0, 0.6);
+}
+
+.dc-root {
+  --dc-accent-pressed: color-mix(in srgb, var(--parke-accent) 85%, #000);
   --dc-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --dc-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -39,7 +104,66 @@
   border-radius: 24px;
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.03) inset,
-    0 12px 32px -16px rgba(0, 0, 0, 0.6);
+    0 12px 32px -16px var(--dc-shadow);
+}
+
+/* 연락처 카드 테두리 - 데이터가 뜨면 테두리를 한 바퀴 그린 뒤, 짧은 강조색 선이 둘레를 조용히 돈다
+   도는 선은 진행 방향(머리)으로 갈수록 밝아지고 머리에서 끊긴다 */
+@property --dc-draw {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --dc-spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.dc-ring {
+  position: absolute;
+  /* 카드의 1px 테두리 위에 겹쳐 그린다 - 사방으로 1px 커지므로 모서리 곡률도 1px 키워야 카드 외곽선과 나란해진다 */
+  inset: -1px;
+  padding: 2px;
+  border-radius: 25px;
+  pointer-events: none;
+  background:
+    conic-gradient(
+      from var(--dc-spin),
+      transparent 0 78%,
+      color-mix(in srgb, var(--parke-accent) 60%, transparent) 92%,
+      color-mix(in srgb, var(--parke-accent) 55%, var(--parke-content)) 100%
+    ),
+    conic-gradient(
+      color-mix(in srgb, var(--parke-accent) 35%, transparent) var(--dc-draw),
+      transparent 0
+    );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  animation:
+    dc-ring-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s both,
+    dc-ring-spin 4.5s linear 1.3s infinite backwards;
+}
+
+@keyframes dc-ring-draw {
+  to {
+    --dc-draw: 360deg;
+  }
+}
+
+@keyframes dc-ring-spin {
+  from {
+    --dc-spin: 0deg;
+  }
+  to {
+    --dc-spin: 360deg;
+  }
 }
 
 /* 누르면 복사되는 카드 - 카드 크기라 버튼보다 덜 줄어든다 */
@@ -52,13 +176,13 @@
 
 .dc-card-press:active:not(:disabled) {
   transform: scale(0.98);
-  background: #2b2b33;
+  background: var(--dc-card-active);
   transition-duration: 0.1s;
 }
 
 @media (hover: hover) {
   .dc-card-press:hover:not(:disabled) {
-    background: #27272f;
+    background: var(--dc-card-hover);
   }
 }
 
@@ -130,8 +254,8 @@
   gap: 8px;
   padding: 8px 16px 8px 8px;
   border-radius: 999px;
-  background: rgba(44, 44, 53, 0.94);
-  color: var(--parke-content);
+  background: var(--dc-toast-bg);
+  color: var(--dc-toast-fg);
   font-size: 14px;
   font-weight: 600;
   -webkit-backdrop-filter: blur(16px);
@@ -222,5 +346,10 @@
 
   .dc-check-draw polyline {
     stroke-dashoffset: 0;
+  }
+
+  /* 움직이지 않을 때는 테두리를 다 그려진 상태로 둔다 */
+  .dc-ring {
+    --dc-draw: 360deg;
   }
 }

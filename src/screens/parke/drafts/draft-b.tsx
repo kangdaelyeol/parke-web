@@ -33,13 +33,14 @@ export const DraftB = () => {
         copyPhone,
         ownerMessage,
         disabled,
+        copyBlocked,
         telHref,
         disabledStyle,
     } = useActionState()
 
     const { copied, handleCopy } = useCopyFeedback(
         copyPhone,
-        disabled,
+        copyBlocked,
         COPIED_DURATION,
     )
 
@@ -49,13 +50,16 @@ export const DraftB = () => {
         <Screen className="db-root">
             <div className="db-backdrop" aria-hidden />
 
-            <header className="db-rise relative z-10 pt-6" style={delay(0)}>
+            <header
+                className="db-rise relative z-10 pt-6 preview:pt-4"
+                style={delay(0)}
+            >
                 <span className="db-glass-chip grid size-10 place-items-center rounded-[12px]">
                     <Mark className="w-6" />
                 </span>
             </header>
 
-            <main className="relative z-10 flex flex-1 flex-col justify-center py-10">
+            <main className="relative z-10 flex flex-1 flex-col justify-center py-10 preview:py-4">
                 {error ? (
                     <div className="db-rise" style={delay(90)}>
                         <DraftError />
@@ -101,7 +105,7 @@ export const DraftB = () => {
                                 </button>
                             </Swap>
 
-                            <div className="db-divider my-7 h-px" />
+                            <div className="db-divider my-7 h-px preview:my-5" />
 
                             <p className="text-[13px] font-medium tracking-[0.01em] text-muted">
                                 남긴 메시지

@@ -62,3 +62,13 @@ export const getOnAccent = (accent: string): string => {
 
     return contrastWithWhite >= contrastWithDark ? '#ffffff' : DARK
 }
+
+// card/{id}/layout - 화면 디자인
+export const LAYOUTS = ['a', 'b', 'c', 'd'] as const
+
+export type Layout = (typeof LAYOUTS)[number]
+
+export const DEFAULT_LAYOUT: Layout = 'a'
+
+export const parseLayout = (value: unknown): Layout =>
+    LAYOUTS.includes(value as Layout) ? (value as Layout) : DEFAULT_LAYOUT

@@ -1,13 +1,21 @@
 import {
     useEffect,
     useLayoutEffect,
+    useMemo,
     useState,
     type PropsWithChildren,
 } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { get, ref } from 'firebase/database'
 import { db } from '@/db'
-import { getOnAccent, parseCustom, parseTheme } from '@/themes'
+import { getOnAccent, parseCustom, parseLayout, parseTheme } from '@/themes'
+import {
+    isPreviewMode,
+    mergeCards,
+    readCardQuery,
+    usePreviewMessageCard,
+    type RawCard,
+} from '@/preview'
 import { useToasterMessageContext } from '@/contexts'
 import { ParkeContext } from '.'
 
@@ -15,11 +23,9 @@ const DEFAULT_OWNER_MESSAGE = '전화주시면 바로 빼드릴게요.'
 
 export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
     const [loading, setLoading] = useState(true)
-    const [phone, setPhone] = useState('')
     const [error, setError] = useState('')
     const [retryCount, setRetryCount] = useState(0)
-    const [dbTheme, setDbTheme] = useState<unknown>(null)
-    const [dbCustom, setDbCustom] = useState<unknown>(null)
+    const [dbCard, setDbCard] = useState<RawCard | null>(null)
     const params = useParams()
     const [searchParams] = useSearchParams()
 
@@ -27,22 +33,38 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
 
     const deviceId = params.id
 
-    // 개발 환경에서는 ?theme=light&accent=ff5500&scale=1.2&message=... 로 미리보기
-    const preview = import.meta.env.DEV ? searchParams : null
-    const previewAccent = preview?.get('accent')
-    const previewScale = preview?.get('scale')
+    // 값의 우선순위: DB < 쿼리 < 앱이 보낸 미리보기 메시지
+    // 쿼리는 미리보기 모드에서, 그리고 개발 중 확인용으로 쓴다 (?theme=light&accent=ff5500 ...)
+    const preview = isPreviewMode(searchParams)
+    const queryCard = useMemo(
+        () =>
+            preview || import.meta.env.DEV ? readCardQuery(searchParams) : null,
+        [preview, searchParams],
+    )
+    const messageCard = usePreviewMessageCard()
+    const card = mergeCards(dbCard, queryCard, preview ? messageCard : null)
 
-    const theme = parseTheme(preview?.get('theme') ?? dbTheme)
+    const phone =
+        typeof card.phone === 'string' || typeof card.phone === 'number'
+            ? String(card.phone)
+            : ''
+    const title = typeof card.title === 'string' ? card.title : ''
+    const theme = parseTheme(card.theme)
+    const layout = parseLayout(card.layout)
     const {
         accent,
         scale,
         message: customMessage,
     } = parseCustom({
-        ...(typeof dbCustom === 'object' ? dbCustom : null),
-        ...(previewAccent && { accent: `#${previewAccent}` }),
-        ...(previewScale && { scale: Number(previewScale) }),
-        ...(preview?.get('message') && { message: preview.get('message') }),
+        // 예전 스키마는 메시지가 최상위에 있다
+        message: card.message,
+        ...(typeof card.custom === 'object' ? card.custom : null),
     })
+
+    useLayoutEffect(() => {
+        document.documentElement.toggleAttribute('data-preview', preview)
+        return () => document.documentElement.removeAttribute('data-preview')
+    }, [preview])
 
     // 테마·배율은 화면을 그리기 전에 적용한다 - 데이터가 그려진 뒤 한 프레임 늦게 바뀌면 크기와 색이 튀어 보인다
     useLayoutEffect(() => {
@@ -70,6 +92,12 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         ;(async () => {
+            // 미리보기는 앱이 넘겨준 값만으로 그린다 (DB 를 읽지 않음)
+            if (preview) {
+                setLoading(false)
+                return
+            }
+
             if (!deviceId) {
                 setError('연락처를 찾을 수 없어요.')
                 setLoading(false)
@@ -80,25 +108,18 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
             setError('')
 
             try {
-                const [snap, themeSnap, customSnap] = await Promise.all([
-                    get(ref(db, `card/${deviceId}/phone`)),
-                    get(ref(db, `card/${deviceId}/theme`)).catch(() => null),
-                    get(ref(db, `card/${deviceId}/custom`)).catch(() => null),
-                ])
+                const snap = await get(ref(db, `card/${deviceId}`))
 
-                console.log(snap, themeSnap, customSnap)
-
-                setDbTheme(themeSnap?.val() ?? null)
-                setDbCustom(customSnap?.val() ?? null)
+                console.log(snap)
 
                 if (!snap.exists()) {
                     // setError('Error - Try again plz!')
-                    setPhone('01024130510')
+                    setDbCard({ phone: '01024130510' })
                     setLoading(false)
                     return
                 }
 
-                setPhone(snap.val())
+                setDbCard(snap.val())
             } catch {
                 setError('연락처를 불러오지 못했어요.')
             }
@@ -106,10 +127,10 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
             // API calls - get Phone number from db
             setLoading(false)
         })()
-    }, [deviceId, retryCount])
+    }, [deviceId, retryCount, preview])
 
     const copyPhone = () => {
-        if (!phone) return
+        if (!phone || preview) return
         navigator.clipboard.writeText(phone)
         setToasterMessageTimeout('전화번호가 복사되었습니다.')
     }
@@ -126,7 +147,10 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
                 phone,
                 error,
                 theme,
+                layout,
+                title,
                 ownerMessage: customMessage ?? DEFAULT_OWNER_MESSAGE,
+                preview,
             }}
         >
             {children}

@@ -73,9 +73,9 @@ export const DraftError = () => {
     )
 }
 
-// A는 기본 화면 - ?v 없이 들어오면 A
+// ?v 로 레이아웃을 덮어쓴다 - 아무것도 고르지 않으면 카드에 저장된 layout 이 보인다
 const VERSIONS = [
-    { key: null, label: 'A' },
+    { key: 'a', label: 'A' },
     { key: 'b', label: 'B' },
     { key: 'c', label: 'C' },
     { key: 'd', label: 'D' },
@@ -83,7 +83,8 @@ const VERSIONS = [
 
 export const DraftSwitcher = () => {
     const [searchParams] = useSearchParams()
-    const current = searchParams.get('v')
+    const { layout } = useParkeContext()
+    const current = searchParams.get('v') ?? layout
     const activeIndex = Math.max(
         0,
         VERSIONS.findIndex(({ key }) => key === current),
