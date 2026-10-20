@@ -10,6 +10,7 @@ export const parseTheme = (value: unknown): Theme =>
 // card/{id}/custom - 테마 위에 덮어쓰는 값
 export interface Custom {
     accent: string | null
+    // 번호와 메시지 글자에만 적용 - 레이블·버튼까지 키우면 데이터 도착 시 화면 전체가 다시 배치된다
     scale: number
     message: string | null
 }

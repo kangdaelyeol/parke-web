@@ -12,8 +12,52 @@
   }
 }
 
+/* 로딩 스켈레톤 - 바탕 없이 비스듬한 빛줄기만 지나가는 글라스 느낌
+   빛줄기 색은 화면 글자색을 따라가서 밝은 테마에서도 보인다
+   짧은 로딩에서는 깜빡이지 않도록 0.2초 뒤에 나타난다 */
+.draft-skeleton {
+  border-radius: 8px;
+  background-image: linear-gradient(
+    110deg,
+    transparent 30%,
+    color-mix(in srgb, var(--parke-content) 7%, transparent) 43%,
+    color-mix(in srgb, var(--parke-content) 14%, transparent) 50%,
+    color-mix(in srgb, var(--parke-content) 7%, transparent) 57%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+  box-shadow: inset 0 1px 0
+    color-mix(in srgb, var(--parke-content) 6%, transparent);
+  animation:
+    draft-skeleton-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both,
+    draft-skeleton-sweep 1.1s cubic-bezier(0.45, 0, 0.55, 1) 0.3s infinite;
+}
+
+@keyframes draft-skeleton-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* 빛줄기를 왼쪽 밖에서 오른쪽 밖으로 민다 (배경 크기 250% 기준) */
+@keyframes draft-skeleton-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .draft-page {
     animation: none;
+  }
+
+  /* 움직이지 않을 때는 빛줄기를 가운데에 고정해 모양이 보이게 한다 */
+  .draft-skeleton {
+    background-position: 50% 0;
   }
 }

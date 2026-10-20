@@ -11,7 +11,6 @@
 
   --dc-link: #2997ff;
   --dc-body: #a1a1a6;
-  --dc-skeleton: #1d1d1f;
   --dc-ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   background: var(--parke-surface);
@@ -141,15 +140,6 @@
   animation: dc-draw 0.45s var(--dc-ease) 0.1s forwards;
 }
 
-/* 로딩 - 짧은 로딩에서는 스켈레톤이 깜빡이지 않도록 0.2초 뒤에 나타난다 */
-.dc-skeleton {
-  border-radius: 10px;
-  background: var(--dc-skeleton);
-  animation:
-    dc-fade-in 0.3s var(--dc-ease) 0.2s both,
-    dc-blink 1.4s ease-in-out 0.5s infinite;
-}
-
 /* 등장 - 화면 골격은 헤더 → 레이블 → 링크 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .dc-enter {
   animation: dc-enter 0.6s var(--dc-ease) var(--d, 0ms) both;
@@ -182,18 +172,6 @@
 @keyframes dc-draw {
   to {
     stroke-dashoffset: 0;
-  }
-}
-
-@keyframes dc-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes dc-blink {
-  50% {
-    opacity: 0.5;
   }
 }
 

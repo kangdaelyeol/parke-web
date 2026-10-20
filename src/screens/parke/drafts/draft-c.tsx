@@ -53,7 +53,7 @@ export const DraftC = () => {
                 ) : (
                     <>
                         <p
-                            className="dc-enter relative text-[length:calc(17px*var(--parke-scale))] font-semibold text-muted"
+                            className="dc-enter relative text-[17px] font-semibold text-muted"
                             style={delay(80)}
                         >
                             차주 연락처
@@ -73,7 +73,7 @@ export const DraftC = () => {
                             skeleton={
                                 // 실제 번호와 같은 글자 크기·행간으로 높이를 맞춰 로딩 후 레이아웃이 튀지 않게 한다
                                 <div className={NUMBER_SIZE}>
-                                    <div className="dc-skeleton mx-auto h-[1.1em] w-[6.8em] max-w-full" />
+                                    <div className="draft-skeleton mx-auto h-[1.1em] w-[6.8em] max-w-full" />
                                 </div>
                             }
                         >
@@ -100,12 +100,12 @@ export const DraftC = () => {
                             className="mt-5 justify-items-center"
                             skeleton={
                                 <div className="py-[0.25em] text-[length:calc(21px*var(--parke-scale))]">
-                                    <div className="dc-skeleton mx-auto h-[1em] w-[60%]" />
+                                    <div className="draft-skeleton mx-auto h-[1em] w-[60%]" />
                                 </div>
                             }
                         >
                             <p className="max-w-[20em] break-keep text-[length:calc(21px*var(--parke-scale))] font-medium leading-[1.5] text-[var(--dc-body)]">
-                                “{ownerMessage}”
+                                {ownerMessage}
                             </p>
                         </Swap>
 
@@ -114,7 +114,7 @@ export const DraftC = () => {
                             onClick={handleCopy}
                             disabled={disabled}
                             className={cn(
-                                'dc-link dc-enter mt-8 cursor-pointer text-[length:calc(17px*var(--parke-scale))] font-medium',
+                                'dc-link dc-enter mt-8 cursor-pointer text-[17px] font-medium',
                                 disabledStyle,
                             )}
                             style={delay(160)}
@@ -143,7 +143,7 @@ export const DraftC = () => {
                     href={telHref}
                     aria-disabled={disabled}
                     className={cn(
-                        'dc-cta flex h-14 w-full items-center justify-center gap-2 rounded-full text-[length:calc(17px*var(--parke-scale))] font-semibold',
+                        'dc-cta flex h-14 w-full items-center justify-center gap-2 rounded-full text-[17px] font-semibold',
                         disabledStyle,
                     )}
                 >

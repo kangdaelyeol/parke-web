@@ -1,4 +1,9 @@
-import { useEffect, useState, type PropsWithChildren } from 'react'
+import {
+    useEffect,
+    useLayoutEffect,
+    useState,
+    type PropsWithChildren,
+} from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { get, ref } from 'firebase/database'
 import { db } from '@/db'
@@ -39,14 +44,15 @@ export const ParkeContextProvider = ({ children }: PropsWithChildren) => {
         ...(preview?.get('message') && { message: preview.get('message') }),
     })
 
-    useEffect(() => {
+    // 테마·배율은 화면을 그리기 전에 적용한다 - 데이터가 그려진 뒤 한 프레임 늦게 바뀌면 크기와 색이 튀어 보인다
+    useLayoutEffect(() => {
         document.documentElement.dataset.theme = theme
         return () => {
             delete document.documentElement.dataset.theme
         }
     }, [theme])
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const { style } = document.documentElement
 
         style.setProperty('--parke-scale', String(scale))

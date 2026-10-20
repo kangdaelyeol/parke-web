@@ -327,15 +327,6 @@
   animation: da-draw 0.45s var(--da-ease) 0.1s forwards;
 }
 
-/* 로딩 - 짧은 로딩에서는 스켈레톤이 깜빡이지 않도록 0.2초 뒤에 나타난다 */
-.da-skeleton {
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--parke-content) 9%, transparent);
-  animation:
-    da-skeleton-in 0.3s var(--da-ease) 0.2s both,
-    da-skeleton-pulse 1.6s ease-in-out 0.5s infinite;
-}
-
 /* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .da-rise {
   animation: da-rise 0.5s var(--da-ease) var(--d, 0ms) both;
@@ -351,21 +342,6 @@
     opacity: 1;
     transform: none;
     filter: none;
-  }
-}
-
-@keyframes da-skeleton-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes da-skeleton-pulse {
-  50% {
-    opacity: 0.45;
   }
 }
 

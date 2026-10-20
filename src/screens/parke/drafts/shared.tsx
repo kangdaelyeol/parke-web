@@ -58,16 +58,14 @@ export const DraftError = () => {
 
     return (
         <div className="flex flex-col items-start">
-            <div className="text-[length:calc(22px*var(--parke-scale))] font-bold">
-                {error}
-            </div>
-            <div className="mt-2 text-[length:calc(15px*var(--parke-scale))] text-muted">
+            <div className="text-[22px] font-bold">{error}</div>
+            <div className="mt-2 text-[15px] text-muted">
                 네트워크 상태를 확인한 뒤 다시 시도해주세요.
             </div>
             <button
                 type="button"
                 onClick={retry}
-                className="mt-6 cursor-pointer rounded-button border border-line px-5 py-2.5 text-[length:calc(15px*var(--parke-scale))] font-medium active:bg-line"
+                className="mt-6 cursor-pointer rounded-button border border-line px-5 py-2.5 text-[15px] font-medium active:bg-line"
             >
                 다시 시도
             </button>

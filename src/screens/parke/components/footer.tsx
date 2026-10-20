@@ -8,7 +8,7 @@ export const Footer = () => {
 
     return (
         <div className="absolute bottom-5 px-6 w-full">
-            <div className="max-w-[440px] mx-auto flex gap-[12px] text-[length:calc(18px*var(--parke-scale))] text-content *:select-none">
+            <div className="max-w-[440px] mx-auto flex gap-[12px] text-[18px] text-content *:select-none">
                 <button
                     type="button"
                     onClick={copyPhone}

@@ -14,7 +14,6 @@
   --parke-on-accent: #ffffff;
 
   --db-card: #222229;
-  --db-card-raised: #2e2e37;
   --db-body: #e5e8eb;
   --db-accent-pressed: #1b64da;
   --db-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -166,15 +165,6 @@
   animation: db-draw 0.45s var(--db-ease) 0.1s forwards;
 }
 
-/* 로딩 - 짧은 로딩에서는 스켈레톤이 깜빡이지 않도록 0.2초 뒤에 나타난다 */
-.db-skeleton {
-  border-radius: 8px;
-  background: var(--db-card-raised);
-  animation:
-    db-fade-in 0.3s var(--db-ease) 0.2s both,
-    db-blink 1.4s ease-in-out 0.5s infinite;
-}
-
 /* 등장 - 화면 골격은 헤더 → 카드 → 버튼 순, 데이터는 번호 → 메시지 순 */
 .db-enter {
   animation: db-enter 0.5s var(--db-ease) var(--d, 0ms) both;
@@ -219,18 +209,6 @@
 @keyframes db-draw {
   to {
     stroke-dashoffset: 0;
-  }
-}
-
-@keyframes db-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes db-blink {
-  50% {
-    opacity: 0.5;
   }
 }
 

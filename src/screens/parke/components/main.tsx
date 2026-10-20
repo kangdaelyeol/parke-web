@@ -13,23 +13,23 @@ export const Main = () => {
                 <CircleGradient />
                 {error ? (
                     <div className="relative z-10 flex flex-col items-start">
-                        <div className="text-[length:calc(23px*var(--parke-scale))] tracking-wide font-[600]">
+                        <div className="text-[23px] tracking-wide font-[600]">
                             {error}
                         </div>
-                        <div className="text-muted font-medium text-[length:calc(16px*var(--parke-scale))] mt-2">
+                        <div className="text-muted font-medium text-[16px] mt-2">
                             네트워크 상태를 확인한 뒤 다시 시도해주세요.
                         </div>
                         <button
                             type="button"
                             onClick={retry}
-                            className="mt-6 px-[20px] py-[10px] text-[length:calc(16px*var(--parke-scale))] font-medium border-[0.5px] border-line rounded-button cursor-pointer select-none active:bg-line"
+                            className="mt-6 px-[20px] py-[10px] text-[16px] font-medium border-[0.5px] border-line rounded-button cursor-pointer select-none active:bg-line"
                         >
                             다시 시도
                         </button>
                     </div>
                 ) : (
                     <div className="relative z-10 flex flex-col">
-                        <div className="text-muted font-intertight font-medium text-[length:calc(16px*var(--parke-scale))]">
+                        <div className="text-muted font-intertight font-medium text-[16px]">
                             연락처
                         </div>
                         {/* 스켈레톤 높이 = 버튼 여백(p-0.5 + py-2 = 20px) + 번호 한 줄(1.5em) */}
@@ -67,7 +67,7 @@ export const Main = () => {
                                 </div>
                             </button>
                         </Swap>
-                        <div className="text-muted font-intertight font-medium text-[length:calc(16px*var(--parke-scale))] mt-5">
+                        <div className="text-muted font-intertight font-medium text-[16px] mt-5">
                             메시지
                         </div>
                         <Swap

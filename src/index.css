@@ -60,17 +60,6 @@ body {
   background-color: var(--parke-surface);
 }
 
-/* DB에서 글자 배율이 들어올 때 글자 크기가 한 번에 튀지 않고 서서히 바뀌도록 숫자 타입으로 등록 */
-@property --parke-scale {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
-}
-
-:root {
-  transition: --parke-scale 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 /* 테두리 모양 마스크 - padding 안쪽(content-box)을 도려내 padding 두께만큼만 보이게 한다 */
 .border-ring {
   -webkit-mask:
@@ -124,8 +113,7 @@ body {
     animation: none;
   }
 
-  .swap-skeleton,
-  :root {
+  .swap-skeleton {
     transition: none;
   }
 }

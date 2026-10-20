@@ -62,7 +62,7 @@ export const DraftB = () => {
                                 }
                                 className="db-card db-card-press block w-full cursor-pointer p-6 text-left disabled:cursor-default"
                             >
-                                <span className="relative block text-[length:calc(14px*var(--parke-scale))] font-medium text-muted">
+                                <span className="relative block text-[14px] font-medium text-muted">
                                     차주 연락처
                                     {!loading && (
                                         <span
@@ -80,7 +80,7 @@ export const DraftB = () => {
                                     skeleton={
                                         // 실제 번호와 같은 글자 크기·행간으로 높이를 맞춰 로딩 후 레이아웃이 튀지 않게 한다
                                         <div className={NUMBER_SIZE}>
-                                            <div className="db-skeleton h-[1.25em] w-[7.2em] max-w-full" />
+                                            <div className="draft-skeleton h-[1.25em] w-[7.2em] max-w-full" />
                                         </div>
                                     }
                                 >
@@ -100,7 +100,7 @@ export const DraftB = () => {
                             className="db-enter db-card p-6"
                             style={delay(120)}
                         >
-                            <p className="text-[length:calc(14px*var(--parke-scale))] font-medium text-muted">
+                            <p className="text-[14px] font-medium text-muted">
                                 남긴 메시지
                             </p>
                             <Swap
@@ -109,7 +109,7 @@ export const DraftB = () => {
                                 className="mt-2 justify-items-start"
                                 skeleton={
                                     <div className="py-[0.3em] text-[length:calc(17px*var(--parke-scale))]">
-                                        <div className="db-skeleton h-[1em] w-[70%]" />
+                                        <div className="draft-skeleton h-[1em] w-[70%]" />
                                     </div>
                                 }
                             >
@@ -142,7 +142,7 @@ export const DraftB = () => {
                     href={telHref}
                     aria-disabled={disabled}
                     className={cn(
-                        'db-cta flex h-14 w-full items-center justify-center gap-2 rounded-[16px] text-[length:calc(17px*var(--parke-scale))] font-bold',
+                        'db-cta flex h-14 w-full items-center justify-center gap-2 rounded-[16px] text-[17px] font-bold',
                         disabledStyle,
                     )}
                 >

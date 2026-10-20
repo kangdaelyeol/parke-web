@@ -67,7 +67,7 @@ export const DraftA = () => {
                             onPointerMove={moveSheen}
                             onPointerLeave={resetSheen}
                         >
-                            <p className="relative text-[length:calc(13px*var(--parke-scale))] font-medium tracking-[0.01em] text-muted">
+                            <p className="relative text-[13px] font-medium tracking-[0.01em] text-muted">
                                 차주 연락처
                                 {!loading && (
                                     <span
@@ -84,7 +84,7 @@ export const DraftA = () => {
                                 skeleton={
                                     // 실제 번호와 같은 글자 크기·행간으로 높이를 맞춰 로딩 후 레이아웃이 튀지 않게 한다
                                     <div className="text-[length:min(calc(40px*var(--parke-scale)),calc((min(100vw,440px)_-_104px)/7.8))]">
-                                        <div className="da-skeleton h-[1.15em] w-[7.2em] max-w-full" />
+                                        <div className="draft-skeleton h-[1.15em] w-[7.2em] max-w-full" />
                                     </div>
                                 }
                             >
@@ -103,7 +103,7 @@ export const DraftA = () => {
 
                             <div className="da-divider my-7 h-px" />
 
-                            <p className="text-[length:calc(13px*var(--parke-scale))] font-medium tracking-[0.01em] text-muted">
+                            <p className="text-[13px] font-medium tracking-[0.01em] text-muted">
                                 남긴 메시지
                             </p>
                             <Swap
@@ -112,7 +112,7 @@ export const DraftA = () => {
                                 className="mt-2.5 justify-items-start"
                                 skeleton={
                                     <div className="py-[0.325em] text-[length:calc(18px*var(--parke-scale))]">
-                                        <div className="da-skeleton h-[1em] w-[70%]" />
+                                        <div className="draft-skeleton h-[1em] w-[70%]" />
                                     </div>
                                 }
                             >
@@ -162,7 +162,7 @@ export const DraftA = () => {
                     href={telHref}
                     aria-disabled={disabled}
                     className={cn(
-                        'da-call flex h-[60px] flex-1 items-center justify-center gap-2.5 rounded-button text-[length:calc(17px*var(--parke-scale))] font-semibold tracking-[-0.01em]',
+                        'da-call flex h-[60px] flex-1 items-center justify-center gap-2.5 rounded-button text-[17px] font-semibold tracking-[-0.01em]',
                         disabledStyle,
                     )}
                 >
